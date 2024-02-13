@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "app.js",
-    "dev": "app.js"
+    "dev": "ts-node app.ts"
   },
   "dependencies": {
     "@sequelize/core": "^7.0.0-alpha.34",
@@ -21,6 +21,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.11.17",
     "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
