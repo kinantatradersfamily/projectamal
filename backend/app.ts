@@ -1,15 +1,15 @@
-require('dotenv').config()
-const express = require('express');
-const sequelize = require('./db');
-const router = require("./routes/router.js");
-const bodyParser = require('body-parser')
-const cors = require('cors')
+import 'dotenv/config'
+import express from 'express';
+import sequelize from './db';
+import router from "./routes/router";
+import bodyParser from 'body-parser'
+import cors from 'cors'
 
 const User = require('./models/user');
 const Slider = require('./models/slider');
 
-const { createSlider, updateSlider } = require('./controller/slider.controller.js');
-const { createUser, updateUser, getUser } = require('./controller/user.controller.js');
+const { createSlider, updateSlider } = require('./controller/slider.controller');
+const { createUser, updateUser, getUser } = require('./controller/user.controller');
 
 const app = express();
 const PORT = 3000;
@@ -17,7 +17,7 @@ const PORT = 3000;
 app.use(cors())
 app.use(bodyParser.json())
 
-// Sync model dengan database
+// // Sync model dengan database
 sequelize.sync({
     logging: console.log
 })

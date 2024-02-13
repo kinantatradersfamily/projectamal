@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../db');
+import Sequelize from 'sequelize';
+import sequelize from '../db';
 
 const Slider = sequelize.define('Slider', {
   title: {
@@ -17,4 +17,4 @@ const Slider = sequelize.define('Slider', {
   },
 });
 
-module.exports = Slider;
+export default Slider

@@ -1,9 +1,10 @@
-const userModel = require("./../models/user");
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+import jwt from "jsonwebtoken"
+import userModel from '../models/user'
+import bcrypt from 'bcrypt'
+import { Request, Response } from "express"
 
 
-async function login(req, res) {
+export async function login(req: Request, res: Response) {
   //check user and pass 
   try {
     const user = await userModel.findOne({
@@ -19,7 +20,7 @@ async function login(req, res) {
     const conditionPassword = bcrypt.compareSync(getPassword, user.password)
     
     if(conditionPassword) {
-      const jwtSecretKey = process.env.JWT_SECRET_KEY;
+      const jwtSecretKey = process.env.JWT_SECRET_KEY as string;
       const tempUser = {id : user.id}
       const token = jwt.sign(tempUser, jwtSecretKey)
 
@@ -34,21 +35,21 @@ async function login(req, res) {
   }
 }
 
-async function createUser(req, res) {
+export async function createUser(req: Request, res: Response) {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
     userModel.create({
         username: req.body.username,
         password: hashedPassword,
     })
-    .then(function (result) {
+    .then(function (result: any) {
         res.json(result);
     })
-    .catch(function (error) {
+    .catch(function (error: any) {
         res.json({ error: error });
     });
 }
 
-async function getUser(req, res) {
+export async function getUser(req: Request, res: Response) {
   try {
     const user = await userModel.findOne({
       where: { id : req.params.id }
@@ -66,7 +67,7 @@ async function getUser(req, res) {
 
 }
 
-function updateUser(req, res) {
+export function updateUser(req: Request, res: Response) {
   userModel.update(
     {
       username: req.body.username,
@@ -78,19 +79,12 @@ function updateUser(req, res) {
       },
     }
   )
-  .then(function (result) {
+  .then(function (result: any) {
     res.json({
       message: `Berhasil Update data ${result}`,
     });
   })
-  .catch(function (error) {
+  .catch(function (error: any) {
     res.json({ error: error });
   });
 }
-  
-module.exports = {
-  login,
-  createUser,
-  updateUser,
-  getUser
-};

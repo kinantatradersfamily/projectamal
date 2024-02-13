@@ -1,19 +1,21 @@
-const userModel = require("./../models/slider");
+import { Request, Response } from "express";
+import userModel from "./../models/slider"
 
-function createSlider(req, res) {
+export function createSlider(req: Request, res: Response) {
   userModel.create({
     title: req.body.name_slider,
     description_image: req.body.description_image,
     image: req.body.image,
   })
-  .then(function (result) {
+  .then(function (result: any) {
     res.json(result);
   })
-  .catch(function (error) {
-    res.json({ error: error });
+  .catch(function (error: any) {
+    res.json({ error: error,  });
   });
 }
-function updateSlider(req, res) {
+
+export function updateSlider(req: Request, res: Response) {
   userModel.update(
   {
     title: req.body.title,
@@ -26,18 +28,13 @@ function updateSlider(req, res) {
     },
   }
 )
-  .then(function (result) {
+  .then(function (result: any) {
     res.json({
       message: `Berhasil Update data ${result}`,
     });
   })
-  .catch(function (error) {
+  .catch(function (error: any) {
     res.json({ error: error });
   });
      
 }
-  
-module.exports = {
-    createSlider,
-    updateSlider
-};
