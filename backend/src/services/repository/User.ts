@@ -9,13 +9,13 @@ export async function DBGetUserByUsername(username: string) {
     return db.query(`SELECT * FROM users WHERE username = ?`, [username])
 }
 
-export async function DBCreateUser({ password, username }: CreatePayload) {
+export async function DBCreateUser({ password, username, role_id = 3 }: CreatePayload) {
     const values = [
-        [username, password]
+        [username, password, role_id]
     ]
 
     const query = await db.query(`
-        INSERT INTO users (username, password) VALUES ?
+        INSERT INTO users (username, password, role_id) VALUES ?
     `, [values])
 
     return query

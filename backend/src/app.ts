@@ -1,20 +1,24 @@
 import 'dotenv/config'
-import db from '../ormconfig'
 import router from "./application/routes";
 import fastify from "fastify"
+import config from './application/config';
+import { ValidationError } from 'yup';
 
-const PORT = 3000;
 const server = fastify()
 
 async function main() {
   try {
-    await db.initialize()
+    await server.register(config)
     await server.register(router)
-    await server.listen({ port: PORT })
+    await server.listen({ port: process.env.NODE_PORT, host: process.env.NODE_HOST })
 
-    console.log(`Server is running on http://localhost:${PORT}`)
+    console.log(`Server is running on http://localhost:${process.env.NODE_PORT}`)
   } catch (error) {
-    server.log.error(error)
+    if(error instanceof ValidationError) {
+      throw new Error(error.message)
+    } else {
+      console.error(error)
+    }
   }
 }
 

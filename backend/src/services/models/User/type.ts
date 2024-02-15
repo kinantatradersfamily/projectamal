@@ -4,7 +4,10 @@ import { createUserRequest, getUserRequest, loginRequest, updateUserRequest } fr
 export type CreatePayload = {
     username: string
     password: string
+    role_id?: number
 }
+
+export type User = { id: number, created_at: number } & Required<CreatePayload>
 
 export type UpdatePayload = { id: number } & CreatePayload 
 
