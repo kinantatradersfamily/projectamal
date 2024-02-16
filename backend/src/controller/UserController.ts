@@ -42,3 +42,12 @@ export async function updateUserHandler(request: FastifyRequest, reply: FastifyR
     throw error
   }
 }
+
+export async function verifyUser(request: FastifyRequest) {
+  try {
+    const { password, ...user } = request.user
+    return { message: user }
+  } catch (error) {
+    throw error
+  }
+}

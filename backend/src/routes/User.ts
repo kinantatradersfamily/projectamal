@@ -2,9 +2,7 @@ import * as userController from "../controller/UserController";
 import { RouteOptions } from "fastify";
 import fp from "fastify-plugin"
 import { createStorage } from "../utils/upload";
-import multer from "fastify-multer";
-import { validateBody } from "../application/middleware/validation";
-import { createUserRequest } from "../services/models/User";
+import * as Auth from "../application/middleware/auth";
 
 const upload = createStorage()
 
@@ -30,6 +28,12 @@ const routes: RouteOptions[] = [
         url: "/users/:id",
         handler: userController.updateUserHandler
     },
+    {
+        method: ["GET"],
+        url: '/users/verify',
+        preHandler: Auth.CheckAuth,
+        handler: userController.verifyUser
+    }
 ]
 
 export default fp(async (server) => {
