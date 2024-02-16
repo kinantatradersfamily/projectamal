@@ -7,7 +7,7 @@ type SignPayload = {
 }
 
 export function signToken({ payload, expiresIn = '1d' }: SignPayload) {
-    const token = jwt.sign(payload, process.env.SECRET_KEY as string, {
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
         expiresIn
     })
 
@@ -15,5 +15,5 @@ export function signToken({ payload, expiresIn = '1d' }: SignPayload) {
 }
 
 export function verifyToken(token: string): User {
-    return jwt.verify(token, process.env.SECRET_KEY as string) as User
+    return jwt.verify(token, process.env.JWT_SECRET_KEY as string) as User
 }
