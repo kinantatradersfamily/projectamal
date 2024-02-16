@@ -7,8 +7,13 @@ import multipart from '@fastify/multipart'
 import { MulterError } from 'fastify-multer'
 import fastifyStatic from '@fastify/static'
 import path from 'path'
+import fastifyCors from '@fastify/cors'
 
 export default fp(async (server) => {
+    await server.register(fastifyCors, {
+        origin: "*"
+    })
+
     server.setErrorHandler(async (error, request, reply) => {
         if(error instanceof ValidationError) {
             throw new RequestError(error.message)
