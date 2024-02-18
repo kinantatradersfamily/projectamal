@@ -3,11 +3,11 @@ import UserRoutes from '../routes/User'
 import ContentRoutes from '../routes/Content'
 import { ValidationError } from 'yup'
 import { RequestError } from '../utils/error'
-import multipart from '@fastify/multipart'
-import { MulterError } from 'fastify-multer'
+import fastifyMulter, { MulterError } from 'fastify-multer'
 import fastifyStatic from '@fastify/static'
 import path from 'path'
 import fastifyCors from '@fastify/cors'
+import { File } from 'fastify-multer/lib/interfaces'
 
 export default fp(async (server) => {
     await server.register(fastifyCors, {
@@ -18,11 +18,11 @@ export default fp(async (server) => {
         if(error instanceof ValidationError) {
             throw new RequestError(error.message)
         } else if(error instanceof MulterError) {
-            throw new RequestError(`${error.message} '${error.field}'`)
+            throw new RequestError(error.message)
         } else {
             throw error
         }
-    })    
+    })
 
     await server.register(fastifyStatic, {
         root: path.join(__dirname, '../../public'),
@@ -30,7 +30,15 @@ export default fp(async (server) => {
         cacheControl: true
     })
     
-    await server.register(multipart)
+
+    await server.register(fastifyMulter.contentParser)
     await server.register(UserRoutes)
     await server.register(ContentRoutes)
 })
+
+declare module 'fastify' {
+    export interface FastifyRequest {
+        files: File[]
+        file: File
+    }
+}

@@ -35,7 +35,7 @@ export async function CreateUserDomain(user: CreatePayload) {
     const result = await DBCreateUser(user)
 
     if(result.affectedRows < 1) {
-        throw new Error('FAILED_TO_CREATE_USERS')
+        throw new Error('FAILED_TO_CREATE_USER')
     }
 
     return result

@@ -8,6 +8,8 @@ export function createStorage() {
             let dest = ''
             if(file.fieldname === 'carrousel') {
                 dest = 'public/carrousel'
+            } else if (file.fieldname == 'profile') {
+                dest = 'public/profile'
             } else {
                 cb(new RequestError('FIELD_NOT_REGISTERED'), dest)
             }
@@ -15,10 +17,12 @@ export function createStorage() {
             cb(null, dest)
         },
         filename: (req, file, cb) => {
-            const filename = `${file.fieldname}-${moment().unix()}.${file.originalname}`
+            const fileext = file.originalname.split(".")
+            const ff = file.originalname.replace(/\s+/g, '-').toLocaleLowerCase()
+            const filename = `${ff}-${file.fieldname}-${moment().unix()}.${fileext[fileext.length - 1 ]}`
             cb(null, filename)
         }
     })
 
-    return multer({ storage: options, })
+    return multer({ storage: options })
 }
