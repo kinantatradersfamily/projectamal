@@ -32,14 +32,36 @@ export async function addContentHandler(request: FastifyRequest, reply: FastifyR
     }
 }
 
+export async function editCarrouselHandler(request: FastifyRequest) {
+    try {
+        const { description, id, title } = request.body as ContentDto.EditCarrouselRequest
+    
+        const message = await ContentService.EditCarrouselServiceApp({ image: request.file, description, title, id })
+
+        return { message }
+    } catch (error) {
+        throw error
+    }
+}
+
 export async function editTemplateHandler(request: FastifyRequest) {
     try {
-        const { images, ...body } = request.body as ContentDto.EditTemplateRequest
-        const files = request.files as typeof images
-        const message = await ContentService.EditTemplateServiceApp({ ...body, images: files })
+        const { image, ...body } = request.body as ContentDto.EditTemplateRequest
+        const file = request.file
+        const message = await ContentService.EditTemplateServiceApp({ ...body, image: file })
 
         return { message }
     } catch (error) {
         throw error   
+    }
+}
+
+export async function getCarrouselListHandler() {
+    try {
+        const message = await ContentService.GetCarrouselListServiceApp()
+
+        return { message }
+    } catch (error) {
+        throw error
     }
 }

@@ -1,5 +1,5 @@
 import * as yup from "yup"
-import { addCarrouselRequest, editTemplateRequest, getTemplateRequest } from "./schema"
+import { addCarrouselRequest, editCarrouselRequest, editTemplateRequest, getTemplateRequest } from "./schema"
 
 export type CreatePayload = {
     content: string
@@ -32,8 +32,7 @@ export type GetTemplateServiceApp = GetTemplateRequest
 export type EditTemplateRequest = yup.InferType<typeof editTemplateRequest>
 export type EditTemplateServiceApp = EditTemplateRequest
 
-export type EditCarrousel = {
-    id: number
-    name: string
-    url: string
-}
+export type EditCarrousel = Omit<Carrousel, 'template_id'>
+
+export type EditCarrouselRequest = yup.InferType<typeof editCarrouselRequest>
+export type EditCarrouselServiceApp = EditCarrouselRequest

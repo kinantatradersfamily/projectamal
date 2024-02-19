@@ -66,3 +66,7 @@ export async function editTemplateDomain(payload: ContentDto.EditTemplate, query
 
     return result
 }
+
+export async function getCarrouselListDomain() {
+    return await ContentRepository.DBGetCarrouselList()
+}

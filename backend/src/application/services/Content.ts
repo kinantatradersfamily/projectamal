@@ -36,10 +36,33 @@ export async function AddCarrouselServiceApp(payload: ContentDto.AddCarrouselSer
     return true
 }
 
+export async function GetCarrouselListServiceApp() {
+    const carrousel = await ContentDomainService.getCarrouselListDomain()
+    return carrousel
+}
+
+export async function EditCarrouselServiceApp(payload: ContentDto.EditCarrouselServiceApp) {
+    await ContentDto.editCarrouselRequest.validate(payload)
+
+    const { id, description, title, image } = payload
+
+    // Check carrousel is exist
+    const carrousel = await ContentDomainService.getCarrouselDomain(id)
+
+    if(image) {
+        await ContentDomainService.editCarrouselDomain({ id, content: image.originalname, url: image.path as string, description, title })
+    } else {
+        await ContentDomainService.editCarrouselDomain({ id, description, title, content: carrousel.content, url: carrousel.url })
+    }
+
+    return true
+}
+
+// Todo
 export async function EditTemplateServiceApp(payload: ContentDto.EditTemplateServiceApp) {
     await ContentDto.editTemplateRequest.validate(payload)
 
-    const { images, template_id, description, name, active } = payload
+    const { image, template_id, description, name, active } = payload
 
     await ContentDomainService.getTemplateDomain(template_id)
 
@@ -48,17 +71,21 @@ export async function EditTemplateServiceApp(payload: ContentDto.EditTemplateSer
     try {
         await queryRunner.startTransaction()
 
-        for (const image of images) {
-            const [field, id] = image.fieldname.split('-')
-
-            const carrousel = await ContentDomainService.getCarrouselDomain(parseInt(id))
-
-            if (carrousel.template_id != template_id) {
-                throw new RequestError('CARROUSEL_NOT_BELONGS_TO_THIS_TEMPLATE')
-            }
-
-            await ContentDomainService.editCarrouselDomain({ id: carrousel.id, name: image.originalname, url: image.path as string }, queryRunner)
+        if(image != undefined) {
+            // await ContentDomainService.editCarrouselDomain({ id:  })
         }
+
+        // for (const image of images) {
+        //     const [field, id] = image.fieldname.split('-')
+
+        //     const carrousel = await ContentDomainService.getCarrouselDomain(parseInt(id))
+
+        //     if (carrousel.template_id != template_id) {
+        //         throw new RequestError('CARROUSEL_NOT_BELONGS_TO_THIS_TEMPLATE')
+        //     }
+
+        //     await ContentDomainService.editCarrouselDomain({ id: carrousel.id, name: image.originalname, url: image.path as string }, queryRunner)
+        // }
 
         await ContentDomainService.editTemplateDomain({ id: 1, name, description, active }, queryRunner)
 

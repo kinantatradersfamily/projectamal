@@ -16,5 +16,12 @@ export const editTemplateRequest = yup.object({
         template_id: yup.number().required(),
         name: yup.string().required(),
         description: yup.string().required(),
-        images: yup.array().of(yup.mixed<File>().required()).required()
+        image: yup.mixed<File>()
+})
+
+export const editCarrouselRequest = yup.object({
+        id: yup.number().required(),
+        title: yup.string().required(),
+        description: yup.string().required(),
+        image: yup.mixed<File>()
 })

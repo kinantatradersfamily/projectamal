@@ -27,6 +27,17 @@ const routes: RouteOptions[] = [
         url: "/contents/edit",
         preHandler: upload.any(),
         handler: ContentController.editTemplateHandler
+    },
+    {
+        method: ["POST"],
+        url: "/carrousel/edit",
+        preHandler: upload.single('carrousel'),
+        handler: ContentController.editCarrouselHandler
+    },
+    {
+        method: ["GET"],
+        url: "/carrousel",
+        handler: ContentController.getCarrouselListHandler
     }
 ]
 
