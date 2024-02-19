@@ -9,3 +9,9 @@ export const addCarrouselRequest = yup.object({
 export const getTemplateRequest = yup.object({
         template_id: yup.number().required()
 })
+
+export const editTemplateRequest = yup.object({
+        template_id: yup.number().required(),
+        name: yup.string().required(),
+        images: yup.array().of(yup.mixed<File>().required()).required()
+})
