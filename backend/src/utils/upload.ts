@@ -6,7 +6,7 @@ export function createStorage() {
     const options = multer.diskStorage({
         destination: (req, file, cb) => {
             let dest = ''
-            if(file.fieldname === 'carrousel') {
+            if(file.fieldname === 'carrousel' || file.fieldname.includes('carrousel')) {
                 dest = 'public/carrousel'
             } else if (file.fieldname == 'profile') {
                 dest = 'public/profile'

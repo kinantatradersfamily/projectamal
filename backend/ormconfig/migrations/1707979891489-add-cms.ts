@@ -33,7 +33,7 @@ export class AddCms1707979891489 implements MigrationInterface {
         const { insertId: contentId }: ResultSetHeader = await queryRunner.query(`INSERT INTO cms_template (name, active) VALUES ?`, [cms_template])
 
         const cms_carrousel = [
-            ['Carrousel', '/carrousel/black-prism-concept-ai-generated.jpg', contentId]
+            ['Carrousel', 'public/carrousel/black-prism-concept-ai-generated.jpg', contentId]
         ]
 
         await queryRunner.query(`INSERT INTO cms_carrousel (content, url, template_id) VALUES ?`, [cms_carrousel])

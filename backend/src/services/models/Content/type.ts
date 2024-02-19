@@ -5,17 +5,23 @@ export type CreatePayload = {
     content: string
     url: string
     template_id: number
+    title: string
+    description: string
 }
 
-export type Carrousel = CreatePayload
+export type Carrousel = { id: number } & CreatePayload 
 
-export type Template = {
+export type EditTemplate = {
     id: number
     name: string
+    description: string
     active: number
+}
+
+export type Template = {
     created_at: number
     updated_at: number
-}
+} & EditTemplate
 
 export type AddCarrouselRequest = yup.InferType<typeof addCarrouselRequest>
 export type AddCarrouselServiceApp = AddCarrouselRequest
@@ -28,5 +34,6 @@ export type EditTemplateServiceApp = EditTemplateRequest
 
 export type EditCarrousel = {
     id: number
-    status: number
+    name: string
+    url: string
 }

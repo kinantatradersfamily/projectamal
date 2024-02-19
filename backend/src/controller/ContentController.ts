@@ -24,10 +24,22 @@ export async function getTemplateHandler(request: FastifyRequest, reply: Fastify
 
 export async function addContentHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const { template_id } = request.body as ContentDto.AddCarrouselRequest
-        const message = await ContentService.AddCarrouselServiceApp({ content: request.files, template_id })
+        const { description, title } = request.body as ContentDto.AddCarrouselRequest
+        const message = await ContentService.AddCarrouselServiceApp({ content: request.file, description, title })
         return { message }
     } catch (error) {
         throw error
+    }
+}
+
+export async function editTemplateHandler(request: FastifyRequest) {
+    try {
+        const { images, ...body } = request.body as ContentDto.EditTemplateRequest
+        const files = request.files as typeof images
+        const message = await ContentService.EditTemplateServiceApp({ ...body, images: files })
+
+        return { message }
+    } catch (error) {
+        throw error   
     }
 }

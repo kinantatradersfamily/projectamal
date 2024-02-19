@@ -1,9 +1,10 @@
 import { ResultSetHeader } from 'mysql2'
 import db from '../../../ormconfig'
-import { Carrousel, CreatePayload, EditCarrousel, Template } from '../models/Content'
+import { Carrousel, CreatePayload, EditCarrousel, EditTemplate, Template } from '../models/Content'
 import { QueryRunner } from 'typeorm'
+import moment from 'moment'
 
-export async function DBGetContent() {
+export async function DBGetContentList() {
     const query = await db.query<Template[]>(`SELECT ct.id, ct.name, ct.description, ct.active, ct.created_at, ct.updated_at FROM cms_template ct`)
     return query
 }
@@ -12,21 +13,28 @@ export async function DBGetTemplateById(template_id: number) {
     return await db.query<Template[]>(`SELECT * FROM cms_template WHERE id = ?`, [template_id])
 }
 
-export async function DBGetCarrousel(template_id: number) {
+export async function DBGetCarrouselByTemplate(template_id: number) {
     return await db.query<Carrousel[]>(`SELECT * FROM cms_carrousel cc WHERE cc.template_id = ?`, [template_id])
 }
 
-export async function DBAddCarrousel({ content, url, template_id }: CreatePayload) {
+export async function DBAddCarrousel({ content, url, template_id, description, title }: CreatePayload) {
     const values = [
-        [content, url, template_id]
+        [content, url, title, description ,template_id]
     ]
-    const query = await db.query<ResultSetHeader>(`INSERT INTO cms_carrousel (content, url, template_id) VALUES ?`, [values])
+    const query = await db.query<ResultSetHeader>(`INSERT INTO cms_carrousel (content, url, title, description, template_id) VALUES ?`, [values])
     return query
 }
 
-export async function DBEditCarrousel({ id, status }: EditCarrousel, queryRunner?: QueryRunner) {
-    const values = [
-        [status, id]
-    ]
-    return await db.query<ResultSetHeader>(`UPDATE cms_carrousel SET status = ? WHERE id = ?`, [values], queryRunner)
+export async function DBEditCarrousel({ id, name, url }: EditCarrousel, queryRunner?: QueryRunner) {
+    const values = [name, url, moment().unix(), id]
+    return await db.query<ResultSetHeader>(`UPDATE cms_carrousel SET content = ?, url = ?, updated_at = ? WHERE id = ?`, values, queryRunner)
+}
+
+export async function DBGetCarrousel(id: number) {
+    return await db.query<Carrousel[]>(`SELECT * FROM cms_carrousel WHERE id = ?`, [id])
+}
+
+export async function DBEditTemplate({ active, name, description, id }: EditTemplate, queryRunner?: QueryRunner) {
+    const values = [name, active, description, moment().unix(), id]
+    return await db.query<ResultSetHeader>(`UPDATE cms_template SET name = ?, active = ?, description = ?, updated_at = ? WHERE id = ?`, values, queryRunner)
 }

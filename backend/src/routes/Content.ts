@@ -19,8 +19,14 @@ const routes: RouteOptions[] = [
     {
         method: ["POST"],
         url: "/contents",
-        preHandler: upload.array('carrousel'),
+        preHandler: upload.single('carrousel'),
         handler: ContentController.addContentHandler
+    },
+    {
+        method: ["POST"],
+        url: "/contents/edit",
+        preHandler: upload.any(),
+        handler: ContentController.editTemplateHandler
     }
 ]
 
