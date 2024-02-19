@@ -5,17 +5,21 @@ import { createStorage } from "../utils/upload";
 
 const upload = createStorage()
 
-
 const routes: RouteOptions[] = [
     {
+        method: ['GET'],
+        url: "/contents",
+        handler: ContentController.getTemplateListHandler
+    },
+    {
         method: ["GET"],
-        url: '/contents',
-        handler: ContentController.getContentHandler
+        url: '/contents/:template_id',
+        handler: ContentController.getTemplateHandler
     },
     {
         method: ["POST"],
         url: "/contents",
-        preHandler: upload.array('carrousel', 5),
+        preHandler: upload.array('carrousel'),
         handler: ContentController.addContentHandler
     }
 ]
