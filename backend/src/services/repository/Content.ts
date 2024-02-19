@@ -1,9 +1,10 @@
 import { ResultSetHeader } from 'mysql2'
 import db from '../../../ormconfig'
-import { Carrousel, CreatePayload, Template } from '../models/Content'
+import { Carrousel, CreatePayload, EditCarrousel, Template } from '../models/Content'
+import { QueryRunner } from 'typeorm'
 
 export async function DBGetContent() {
-    const query = await db.query<Template[]>(`SELECT ct.id, ct.name, ct.active, ct.created_at, ct.updated_at FROM cms_template ct`)
+    const query = await db.query<Template[]>(`SELECT ct.id, ct.name, ct.description, ct.active, ct.created_at, ct.updated_at FROM cms_template ct`)
     return query
 }
 
@@ -21,4 +22,11 @@ export async function DBAddCarrousel({ content, url, template_id }: CreatePayloa
     ]
     const query = await db.query<ResultSetHeader>(`INSERT INTO cms_carrousel (content, url, template_id) VALUES ?`, [values])
     return query
+}
+
+export async function DBEditCarrousel({ id, status }: EditCarrousel, queryRunner?: QueryRunner) {
+    const values = [
+        [status, id]
+    ]
+    return await db.query<ResultSetHeader>(`UPDATE cms_carrousel SET status = ? WHERE id = ?`, [values], queryRunner)
 }
