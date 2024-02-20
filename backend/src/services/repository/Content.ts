@@ -25,9 +25,9 @@ export async function DBAddCarrousel({ content, url, template_id, description, t
     return query
 }
 
-export async function DBEditCarrousel({ id, content, url, description, title }: EditCarrousel, queryRunner?: QueryRunner) {
-    const values = [content, url, description, title, moment().unix(), id]
-    return await db.query<ResultSetHeader>(`UPDATE cms_carrousel SET content = ?, url = ?, description = ?, title = ?, updated_at = ? WHERE id = ?`, values, queryRunner)
+export async function DBEditCarrousel({ id, content, url, description, title, active }: EditCarrousel, queryRunner?: QueryRunner) {
+    const values = [content, url, description, title, active ,moment().unix(), id]
+    return await db.query<ResultSetHeader>(`UPDATE cms_carrousel SET content = ?, url = ?, description = ?, title = ?, active = ?, updated_at = ? WHERE id = ?`, values, queryRunner)
 }
 
 export async function DBGetCarrousel(id: number) {

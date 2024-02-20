@@ -44,15 +44,15 @@ export async function GetCarrouselListServiceApp() {
 export async function EditCarrouselServiceApp(payload: ContentDto.EditCarrouselServiceApp) {
     await ContentDto.editCarrouselRequest.validate(payload)
 
-    const { id, description, title, image } = payload
+    const { id, description, title, image, active } = payload
 
     // Check carrousel is exist
     const carrousel = await ContentDomainService.getCarrouselDomain(id)
 
     if(image) {
-        await ContentDomainService.editCarrouselDomain({ id, content: image.originalname, url: image.path as string, description, title })
+        await ContentDomainService.editCarrouselDomain({ id, content: image.originalname, url: image.path as string, description, title, active })
     } else {
-        await ContentDomainService.editCarrouselDomain({ id, description, title, content: carrousel.content, url: carrousel.url })
+        await ContentDomainService.editCarrouselDomain({ id, description, title, content: carrousel.content, url: carrousel.url, active })
     }
 
     return true
