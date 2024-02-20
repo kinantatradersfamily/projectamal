@@ -26,3 +26,7 @@ export const editCarrouselRequest = yup.object({
         description: yup.string().required(),
         image: yup.mixed<File>()
 })
+
+export const getCarrouselDetailsRequest = yup.object({
+        id: yup.number().required()
+})

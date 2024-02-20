@@ -59,6 +59,16 @@ export async function editTemplateHandler(request: FastifyRequest) {
 export async function getCarrouselListHandler() {
     try {
         const message = await ContentService.GetCarrouselListServiceApp()
+        return { message }
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function getCarrouselDetailsHandler(request: FastifyRequest) {
+    try {
+        const params = request.params as ContentDto.GetCarrouselDetailsRequest
+        const message = await ContentService.GetCarrouselDetailsServiceApp(params)
 
         return { message }
     } catch (error) {

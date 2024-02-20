@@ -1,7 +1,6 @@
 import db from "../../../ormconfig";
 import * as ContentDomainService from "../../services/domain/Content";
 import * as ContentDto from "../../services/models/Content";
-import { RequestError } from "../../utils/error";
 
 export async function GetTemplateListServiceApp() {
     const template = await ContentDomainService.getTemplateListDomain()
@@ -98,4 +97,14 @@ export async function EditTemplateServiceApp(payload: ContentDto.EditTemplateSer
         await queryRunner.release()
         throw error
     }
+}
+
+export async function GetCarrouselDetailsServiceApp(payload: ContentDto.GetCarrouselDetailsServiceApp) {
+    await ContentDto.getCarrouselDetailsRequest.validate(payload)
+
+    const { id } = payload
+
+    const carrousel = await ContentDomainService.getCarrouselDomain(id)
+
+    return carrousel
 }
