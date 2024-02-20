@@ -32,6 +32,7 @@ import Register from "@/views/auth/Register.vue";
 import Landing from "@/views/Landing.vue";
 import Profile from "@/views/Profile.vue";
 import Index from "@/views/Index.vue";
+import SliderLanding from '../src/views/admin/table/landing/sliderTableDetail.vue'
 
 // routes
 
@@ -56,6 +57,10 @@ const routes = [
       {
         path: "/admin/maps",
         component: Maps,
+      },
+      {
+        path: "/admin/landing/carousel/table",
+        component: SliderLanding,
       },
     ],
   },

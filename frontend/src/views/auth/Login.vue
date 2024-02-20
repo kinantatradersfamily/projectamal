@@ -5,7 +5,7 @@
             <i class="fas fa-bell"></i>
           </span>
           <span class="inline-block align-middle mr-8">
-            <b class="capitalize">red!</b> {{messageError}}!
+            <b class="capitalize">Warning!</b> {{messageError}}!
           </span>
           <button class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"  @click="closeTheNotice">
             <span>×</span>
@@ -95,15 +95,15 @@ export default {
           password: this.password
         })
 
-        if(response.data) {
+        if(response.data.message) {
           localStorage.clear();
-          localStorage.setItem("id_user", response.data.id);
+          localStorage.setItem("detail_user", response.data.message);
           this.$router.push({path: '/admin/dashboard'})
         }
         
       } catch (error) {
         this.noticeOfError = true
-        this.messageError = error.response.data
+        this.messageError = error.response.data.message
       }
     }
   }

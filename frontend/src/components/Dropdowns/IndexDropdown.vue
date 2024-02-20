@@ -93,6 +93,7 @@ export default {
       dropdownPopoverShow: false,
     };
   },
+
   methods: {
     toggleDropdown: function (event) {
       event.preventDefault();
