@@ -2,40 +2,49 @@ import * as userController from "../controller/UserController";
 import { RouteOptions } from "fastify";
 import fp from "fastify-plugin"
 import { createStorage } from "../utils/upload";
-import * as Auth from "../application/middleware/auth";
-
+import * as Auth from "../application/middleware/Auth";
 const upload = createStorage()
 
 const routes: RouteOptions[] = [
     {
         method: ["GET"],
         url: "/users/:id",
-        summary: "Get User Details",
+        schema: {
+            summary: "Get User Details",
+        },
         handler: userController.getUserHandler
     },
     {
         method: ["POST"],
         url: "/login",
-        summary: "Login",
+        schema: {
+            summary: "Login",
+        },
         handler: userController.loginHandler
     },
     {
         method: ["POST"],
         url: "/users",
-        summary: "Create User",
+        schema: {
+            summary: "Create User",
+        },
         preHandler: upload.single('carrousel'),
         handler: userController.createUserHandler
     },
     {
         method: ["PUT"],
         url: "/users/:id",
-        summary: "Update User",
+        schema: {
+            summary: "Update User",
+        },
         handler: userController.updateUserHandler
     },
     {
         method: ["GET"],
         url: '/users/verify',
-        summary: "Verify User",
+        schema: {
+            summary: "Verify User",
+        },
         preHandler: Auth.CheckAuth,
         handler: userController.verifyUser
     }
