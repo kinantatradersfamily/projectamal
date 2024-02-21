@@ -9,39 +9,46 @@ const routes: RouteOptions[] = [
     {
         method: ['GET'],
         url: "/contents",
+        summary: "Get Content List",
         handler: ContentController.getTemplateListHandler
     },
     {
         method: ["GET"],
         url: '/contents/:template_id',
+        summary: "Get Content Details",
         handler: ContentController.getTemplateHandler
     },
     {
         method: ["POST"],
         url: "/contents",
+        summary: "Add Carrousel",
         preHandler: upload.single('carrousel'),
         handler: ContentController.addContentHandler
     },
     {
         method: ["POST"],
         url: "/contents/edit",
+        summary: "Edit Template",
         preHandler: upload.any(),
         handler: ContentController.editTemplateHandler
     },
     {
         method: ["GET"],
         url: '/carrousel/:id',
+        summary: "Get Carrousel Details",
         handler: ContentController.getCarrouselDetailsHandler
     },
     {
         method: ["POST"],
         url: "/carrousel/edit",
+        summary: "Edit Carrousel",
         preHandler: upload.single('carrousel'),
         handler: ContentController.editCarrouselHandler
     },
     {
         method: ["GET"],
         url: "/carrousel",
+        summary: "Get Carrousel List",
         handler: ContentController.getCarrouselListHandler
     }
 ]

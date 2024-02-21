@@ -102,9 +102,7 @@ export async function EditTemplateServiceApp(payload: ContentDto.EditTemplateSer
 export async function GetCarrouselDetailsServiceApp(payload: ContentDto.GetCarrouselDetailsServiceApp) {
     await ContentDto.getCarrouselDetailsRequest.validate(payload)
 
-    const { id } = payload
-
-    const carrousel = await ContentDomainService.getCarrouselDomain(id)
+    const carrousel = await ContentDomainService.getCarrouselDomain(payload.id)
 
     return carrousel
 }

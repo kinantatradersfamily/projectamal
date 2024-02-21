@@ -9,6 +9,13 @@ import path from 'path'
 import fastifyCors from '@fastify/cors'
 import { File } from 'fastify-multer/lib/interfaces'
 import fastifyFormbody from '@fastify/formbody'
+import AdminRoutes from '../routes/Report'
+
+declare module "fastify" {
+    export interface RouteOptions {
+        summary: string
+    }
+}
 
 export default fp(async (server) => {
     await server.register(fastifyCors, {
@@ -33,6 +40,7 @@ export default fp(async (server) => {
 
     await server.register(fastifyFormbody)
     await server.register(fastifyMulter.contentParser)
+    await server.register(AdminRoutes)
     await server.register(UserRoutes)
     await server.register(ContentRoutes)
 })

@@ -40,5 +40,5 @@ export async function DBEditTemplate({ active, name, description, id }: EditTemp
 }
 
 export async function DBGetCarrouselList() {
-    return await db.query<Carrousel[]>(`SELECT * FROM cms_carrousel`)
+    return await db.query<Carrousel[]>(`SELECT id, content, title, active FROM cms_carrousel`)
 }

@@ -35,7 +35,7 @@ export async function addContentHandler(request: FastifyRequest, reply: FastifyR
 export async function editCarrouselHandler(request: FastifyRequest) {
     try {
         const { description, id, title, active } = request.body as ContentDto.EditCarrouselRequest
-    
+
         const message = await ContentService.EditCarrouselServiceApp({ image: request.file, description, title, id, active })
 
         return { message }
