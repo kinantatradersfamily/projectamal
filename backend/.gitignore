@@ -25,3 +25,4 @@ yarn-error.log*
 commit.sh
 note.MD
 package-lock.json
+build
