@@ -9,13 +9,14 @@ export async function ActivityLogging(request: FastifyRequest) {
             action: request.routeOptions.schema.summary,
             url: request.url,
             user_id: user.id,
+            ip: request.headers["x-forwarded-for"] as string || (request.ip == '::1' ? "127.0.0.1" : request.ip),
         })
     } else {
         await LogDomainService.CreateActivityLogDomain({
             action: request.routeOptions.schema.summary,
             url: request.url,
             user_id: user.id,
-            params: JSON.stringify(request.body)
+            ip: request.headers["x-forwarded-for"] as string || (request.ip == '::1' ? "127.0.0.1" : request.ip),
         })
     }
 }

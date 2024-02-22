@@ -5,6 +5,7 @@ export type CreatePayload = {
     action: string
     url: string
     user_id: number
+    ip: string
     params?: string
 }
 
