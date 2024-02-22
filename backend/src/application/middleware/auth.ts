@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UnathorizedError } from "../../utils/error";
+import { ForbiddenAccessError, UnathorizedError } from "../../utils/error";
 import { verifyToken } from "../../utils/jwt";
-import { User } from "../../services/models/User";
+import { Role, User } from "../../services/models/User";
 import { CheckUserByIdDomain } from "../../services/domain/User";
 
 declare module "fastify" {
@@ -20,4 +20,14 @@ export async function CheckAuth(request: FastifyRequest, reply: FastifyReply) {
     const user: User = verifyToken(token)
 
     request.user = await CheckUserByIdDomain(user.id)
+}
+
+export function CheckRoles(...role: Role[]) {
+    return async function (request: FastifyRequest) {
+        const user = request.user
+
+        if(!role.includes(user.role_id)) {
+            throw new ForbiddenAccessError("ACCESS_DENIED")
+        }
+    }
 }

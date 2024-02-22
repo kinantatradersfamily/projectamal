@@ -1,6 +1,12 @@
 import yup from 'yup'
 import { createUserRequest, getUserRequest, loginRequest, updateUserRequest } from './schema'
 
+export enum Role {
+    SUPER_ADMIN = 1,
+    ADMIN = 2,
+    MANAGER = 3
+}
+
 export type CreatePayload = {
     username: string
     password: string

@@ -1,11 +1,50 @@
-import { RouteOptions } from "fastify";
-import fp from "fastify-plugin"
+import { FastifyInstance, RouteOptions } from "fastify";
+import * as LogController from "../controller/LogController";
+import * as UserController from "../controller/UserController";
 import * as ContentController from "../controller/ContentController";
+import * as Auth from "../application/middleware/Auth";
+import * as Log from "../application/middleware/Log";
+import { Role } from "../services/models/User";
 import { createStorage } from "../utils/upload";
 
 const upload = createStorage()
 
 const routes: RouteOptions[] = [
+    {
+        method: ["GET"],
+        url: "/logs",
+        schema: {
+            summary: "Get Activity Log List"
+        },
+        preHandler: [Auth.CheckRoles(Role.SUPER_ADMIN)],
+        handler: LogController.getActivityLogHandler
+    },
+    {
+        method: ["GET"],
+        url: "/logs/:id",
+        schema: {
+            summary: "Get Activity Log Details"
+        },
+        preHandler: Auth.CheckRoles(Role.SUPER_ADMIN),
+        handler: LogController.activityLogDetailsHandler
+    },
+    {
+        method: ["PUT"],
+        url: "/users/:id",
+        schema: {
+            summary: "Update User",
+        },
+        handler: UserController.updateUserHandler
+    },
+    {
+        method: ["POST"],
+        url: "/users",
+        schema: {
+            summary: "Create User",
+        },
+        preHandler: upload.single('carrousel'),
+        handler: UserController.createUserHandler
+    },
     {
         method: ['GET'],
         url: "/contents",
@@ -67,9 +106,12 @@ const routes: RouteOptions[] = [
     }
 ]
 
-export default fp(async (server) => {
-    for (const route of routes) {
+export default async function SuperAdminRoutes(server: FastifyInstance) {
+    server.addHook('preHandler', Auth.CheckAuth)
+    server.addHook('preHandler', Auth.CheckRoles(Role.SUPER_ADMIN))
+    server.addHook('preSerialization', Log.ActivityLogging)
+    for (const route of routes) {   
         server.route({ ...route })
     }
-})
+}
 

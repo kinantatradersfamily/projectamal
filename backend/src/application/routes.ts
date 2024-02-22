@@ -1,6 +1,4 @@
 import fp from 'fastify-plugin'
-import UserRoutes from '../routes/User'
-import ContentRoutes from '../routes/Content'
 import { ValidationError } from 'yup'
 import { RequestError } from '../utils/error'
 import fastifyMulter, { MulterError } from 'fastify-multer'
@@ -9,8 +7,9 @@ import path from 'path'
 import fastifyCors from '@fastify/cors'
 import { File } from 'fastify-multer/lib/interfaces'
 import fastifyFormbody from '@fastify/formbody'
-import ReportRoutes from '../routes/Report'
-import LogRoutes from '../routes/Log'
+import AdminRoutes from '../routes/Admin'
+import SuperAdminRoutes from '../routes/SuperAdmin'
+import ManagerRoutes from '../routes/Manager'
 
 export default fp(async (server) => {
     await server.register(fastifyCors, {
@@ -35,10 +34,9 @@ export default fp(async (server) => {
 
     await server.register(fastifyFormbody)
     await server.register(fastifyMulter.contentParser)
-    await server.register(ReportRoutes)
-    await server.register(UserRoutes)
-    await server.register(ContentRoutes)
-    await server.register(LogRoutes)
+    await server.register(SuperAdminRoutes)
+    await server.register(ManagerRoutes)
+    await server.register(AdminRoutes)
 })
 
 declare module 'fastify' {

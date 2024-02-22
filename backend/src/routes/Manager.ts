@@ -1,25 +1,17 @@
-import { RouteOptions } from "fastify";
-import fp from "fastify-plugin"
+import { FastifyInstance, RouteOptions } from "fastify";
 import * as ReportController from "../controller/ReportController";
+import * as UserController from "../controller/UserController";
 import * as Auth from "../application/middleware/Auth";
 import * as Log from "../application/middleware/Log";
 
 const routes: RouteOptions[] = [
-    {
-        method: ["GET"],
-        url: "/reports",
-        schema: {
-            summary: "Get Report List",
-        },
-        handler: ReportController.getReportListHandler
-    },
     {
         method: ["POST"],
         url: "/reports/create",
         schema: {
             summary: "Create Report",
         },
-        preHandler: Auth.CheckAuth,
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
         handler: ReportController.createReportHandler
     },
     {
@@ -28,23 +20,31 @@ const routes: RouteOptions[] = [
         schema: {
             summary: "Get Report Details",
         },
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
         handler: ReportController.getReportDetailsHandler
     },
     {
         method: ["POST"],
-        url: "/reports/edit",
+        url: "/login",
         schema: {
-            summary: "Edit Report",
+            summary: "Login",
         },
-        handler: ReportController.editReportHandler
+        handler: UserController.loginHandler
+    },
+    {
+        method: ["GET"],
+        url: '/users/verify',
+        schema: {
+            summary: "Verify User",
+        },
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
+        handler: UserController.verifyUser
     }
 ]
 
-export default fp(async (server) => {
-    server.addHook("preHandler", Auth.CheckAuth)
-    server.addHook("preHandler", Log.ActivityLogging)
+export default async function ManagerRoutes(server: FastifyInstance) {
     for (const route of routes) {
-        server.route({ ...route })   
+        server.route({ ...route })
     }
-})
+}
 
