@@ -1,5 +1,5 @@
 import { CreatePayload, UpdatePayload } from "../models/User";
-import { DBCreateUser, DBGetUserById, DBGetUserByUsername, DBUpdateUser } from "../repository/User";
+import { DBCreateUser, DBGetUserById, DBGetUserByUsername, DBGetUserList, DBUpdateUser } from "../repository/User";
 
 export async function CheckUserByUsernameDomain(username: string) {
     const result = await DBGetUserByUsername(username)
@@ -49,4 +49,8 @@ export async function UpdateUserDomain(user: UpdatePayload) {
     }
 
     return result
+}
+
+export async function GetUserListDomain() {
+    return await DBGetUserList()   
 }

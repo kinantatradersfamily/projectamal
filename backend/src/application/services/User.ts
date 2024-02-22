@@ -25,20 +25,27 @@ export async function LoginServiceApp({ password, username }: UserDto.LoginServi
     return token
 }
 
-export async function CreateUserServiceApp({ username, password }: UserDto.CreateUserServiceApp) {
-    await UserDto.createUserRequest.validate({ username, password })
+export async function CreateUserServiceApp({ username, password, image }: UserDto.CreateUserServiceApp) {
+    await UserDto.createUserRequest.validate({ username, password, image })
 
     await UserDomainService.CheckUsernameAvailableDomain(username)
 
-    await UserDomainService.CreateUserDomain({ username, password: Bcrypt.hashPassword(password) })
+    await UserDomainService.CreateUserDomain({ username, password: Bcrypt.hashPassword(password), profile_img: image !== undefined ? image.path as string : process.env.DEFAULT_USER_IMG_URL })
 
     return true
 }
 
-export async function UpdateUserServiceApp({ id, username, password }: UserDto.UpdateUserServiceApp) {
-    await UserDto.updateUserRequest.validate({ id, username, password })
+export async function UpdateUserServiceApp({ id, username, password, image }: UserDto.UpdateUserServiceApp) {
+    await UserDto.updateUserRequest.validate({ id, username, password, image })
 
-    await UserDomainService.UpdateUserDomain({ id, username, password: Bcrypt.hashPassword(password) })
+    const user = await UserDomainService.CheckUserByIdDomain(id)
+
+    await UserDomainService.UpdateUserDomain({ id, username, password: Bcrypt.hashPassword(password), profile_img: image !== undefined ? image.path as string : user.profile_img })
 
     return true
+}
+
+export async function GetUserListServiceApp() {
+    const users = await UserDomainService.GetUserListDomain()
+    return users
 }

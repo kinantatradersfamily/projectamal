@@ -10,10 +10,13 @@ export enum Role {
 export type CreatePayload = {
     username: string
     password: string
+    profile_img: string
     role_id?: number
 }
 
-export type User = { id: number, created_at: number } & Required<CreatePayload>
+export type User = { id: number, active: number ,created_at: number } & Required<CreatePayload>
+
+export type UserList = Pick<User, 'id' | 'username' | 'role_id' | 'active'>[]
 
 export type UpdatePayload = { id: number } & CreatePayload 
 

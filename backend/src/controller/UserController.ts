@@ -13,9 +13,10 @@ export async function loginHandler(request: FastifyRequest, reply: FastifyReply)
 }
 
 export async function createUserHandler(request: FastifyRequest, reply: FastifyReply) {
+  const file = request.file
   const body = request.body as CreateUserRequest
   try {
-    const message = await UserDomainService.CreateUserServiceApp(body)
+    const message = await UserDomainService.CreateUserServiceApp({ ...body, image: file })
     return { message }
   } catch (error) {
     throw error
@@ -34,9 +35,10 @@ export async function getUserHandler(request: FastifyRequest, reply: FastifyRepl
 }
 
 export async function updateUserHandler(request: FastifyRequest, reply: FastifyReply) {
+  const file = request.file
   const body = request.body as UpdateUserRequest
   try {
-    const message = await UserDomainService.UpdateUserServiceApp(body)
+    const message = await UserDomainService.UpdateUserServiceApp({ ...body, image: file })
     return { message }
   } catch (error) {
     throw error
@@ -49,5 +51,15 @@ export async function verifyUser(request: FastifyRequest) {
     return { message: user }
   } catch (error) {
     throw error
+  }
+}
+
+export async function getUserListHandler() {
+  try {
+    const message = await UserDomainService.GetUserListServiceApp()
+
+    return { message }
+  } catch (error) {
+    throw error    
   }
 }

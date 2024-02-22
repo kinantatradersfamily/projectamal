@@ -29,11 +29,12 @@ const routes: RouteOptions[] = [
         handler: LogController.activityLogDetailsHandler
     },
     {
-        method: ["PUT"],
-        url: "/users/:id",
+        method: ["POST"],
+        url: "/users/edit",
         schema: {
             summary: "Update User",
         },
+        preHandler: upload.single('profile'),
         handler: UserController.updateUserHandler
     },
     {
@@ -42,7 +43,7 @@ const routes: RouteOptions[] = [
         schema: {
             summary: "Create User",
         },
-        preHandler: upload.single('carrousel'),
+        preHandler: upload.single('profile'),
         handler: UserController.createUserHandler
     },
     {
@@ -103,6 +104,11 @@ const routes: RouteOptions[] = [
             summary: "Get Carrousel List",
         },
         handler: ContentController.getCarrouselListHandler
+    },
+    {
+        method: ["GET"],
+        url: "/users",
+        handler: UserController.getUserListHandler
     }
 ]
 
