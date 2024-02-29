@@ -6,7 +6,7 @@ export async function DBGetUserById(user_id: number) {
 }
 
 export async function DBGetUserByUsername(username: string) {
-    return db.query(`SELECT * FROM users WHERE username = ?`, [username])
+    return db.query<User[]>(`SELECT * FROM users WHERE username = ?`, [username])
 }
 
 export async function DBCreateUser({ password, username, role_id = 3, profile_img }: CreatePayload) {

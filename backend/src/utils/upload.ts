@@ -7,9 +7,11 @@ export function createStorage() {
         destination: (req, file, cb) => {
             let dest = ''
             if(file.fieldname === 'carrousel' || file.fieldname.includes('carrousel')) {
-                dest = 'public/carrousel'
+                dest = 'public/contents/carrousel'
             } else if (file.fieldname == 'profile') {
                 dest = 'public/profile'
+            } else if(file.fieldname == 'events') {
+                dest = 'public/contents/events'
             } else {
                 cb(new RequestError('FIELD_NOT_REGISTERED'), dest)
             }

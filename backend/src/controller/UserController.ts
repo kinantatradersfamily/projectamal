@@ -5,7 +5,13 @@ import { CreateUserRequest, GetUserRequest, LoginRequest, UpdateUserRequest } fr
 export async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
   const { password, username } = request.body as LoginRequest
   try {
-    const message = await UserDomainService.LoginServiceApp({ username, password })
+    const message = await UserDomainService.LoginServiceApp({ 
+      username,
+      password,
+      url: request.url,
+      action: request.routeOptions.schema.summary,
+      ip: request.headers["x-forwarded-for"] as string || (request.ip == '::1' ? "127.0.0.1" : request.ip),
+     })
     return { message }
   } catch (error) { 
     throw error

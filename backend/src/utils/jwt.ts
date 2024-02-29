@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken"
 import { User } from "../services/models/User"
 
+export type JwtPayload = { id: number }
+
 type SignPayload = {
-    payload: User
+    payload: JwtPayload
     expiresIn?: string
 }
 

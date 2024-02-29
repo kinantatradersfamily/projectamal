@@ -30,3 +30,21 @@ export const editCarrouselRequest = yup.object({
 export const getCarrouselDetailsRequest = yup.object({
         id: yup.number().required()
 })
+
+export const createEventRequest = yup.object({
+        title: yup.string().required(),
+        description: yup.string().required(),
+        event_id: yup.number().required(),
+})
+
+export const createEventDetailsRequest = yup.object({
+        title: yup.string().required(),
+        description: yup.string().required(),
+        cms_event_id: yup.number().required()
+})
+
+export const editEventRequest = yup.object({
+        title: yup.string().required(),
+        description: yup.string().required(),
+        id: yup.number().required()
+})

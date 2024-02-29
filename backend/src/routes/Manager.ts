@@ -3,6 +3,7 @@ import * as ReportController from "../controller/ReportController";
 import * as UserController from "../controller/UserController";
 import * as Auth from "../application/middleware/Auth";
 import * as Log from "../application/middleware/Log";
+import * as EventController from "../controller/EventController";
 
 const routes: RouteOptions[] = [
     {
@@ -38,7 +39,7 @@ const routes: RouteOptions[] = [
             summary: "Verify User",
         },
         preHandler: [Auth.CheckAuth, Log.ActivityLogging],
-        handler: UserController.verifyUser
+        handler: UserController.verifyUser,
     }
 ]
 

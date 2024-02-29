@@ -75,3 +75,25 @@ export async function getCarrouselDetailsHandler(request: FastifyRequest) {
         throw error
     }
 }
+
+export async function createEventHandler(request: FastifyRequest) {
+    try {
+        const { description, title, event_id } = request.body as ContentDto.CreateEventRequest
+        const message = await ContentService.CreateEventServiceApp({ description, title, event_id })
+
+        return { message }
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function editEventHandler(request: FastifyRequest) {
+    try {
+        const body = request.body as ContentDto.EditEventRequest
+        const message = await ContentService.EditEventServiceApp(body)
+
+        return { message }
+    } catch (error) {
+        throw error
+    }
+}

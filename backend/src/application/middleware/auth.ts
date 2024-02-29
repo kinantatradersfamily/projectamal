@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ForbiddenAccessError, UnathorizedError } from "../../utils/error";
-import { verifyToken } from "../../utils/jwt";
+import { JwtPayload, verifyToken } from "../../utils/jwt";
 import { Role, User } from "../../services/models/User";
 import { CheckUserByIdDomain } from "../../services/domain/User";
 
@@ -17,7 +17,7 @@ export async function CheckAuth(request: FastifyRequest, reply: FastifyReply) {
         throw new UnathorizedError('PLEASE_LOGIN_FIRST')
     }
 
-    const user: User = verifyToken(token)
+    const user: JwtPayload = verifyToken(token)
 
     request.user = await CheckUserByIdDomain(user.id)
 }

@@ -64,15 +64,6 @@ const routes: RouteOptions[] = [
     },
     {
         method: ["POST"],
-        url: "/contents",
-        schema: {
-            summary: "Add Carrousel",
-        },
-        preHandler: upload.single('carrousel'),
-        handler: ContentController.addContentHandler
-    },
-    {
-        method: ["POST"],
         url: "/contents/edit",
         schema: {
             summary: "Edit Template",
@@ -82,34 +73,9 @@ const routes: RouteOptions[] = [
     },
     {
         method: ["GET"],
-        url: '/carrousel/:id',
-        schema: {
-            summary: "Get Carrousel Details",
-        },
-        handler: ContentController.getCarrouselDetailsHandler
-    },
-    {
-        method: ["POST"],
-        url: "/carrousel/edit",
-        schema: {
-            summary: "Edit Carrousel",
-        },
-        preHandler: upload.single('carrousel'),
-        handler: ContentController.editCarrouselHandler
-    },
-    {
-        method: ["GET"],
-        url: "/carrousel",
-        schema: {
-            summary: "Get Carrousel List",
-        },
-        handler: ContentController.getCarrouselListHandler
-    },
-    {
-        method: ["GET"],
         url: "/users",
         handler: UserController.getUserListHandler
-    }
+    },
 ]
 
 export default async function SuperAdminRoutes(server: FastifyInstance) {

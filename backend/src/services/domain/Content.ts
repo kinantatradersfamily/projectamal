@@ -70,3 +70,27 @@ export async function editTemplateDomain(payload: ContentDto.EditTemplate, query
 export async function getCarrouselListDomain() {
     return await ContentRepository.DBGetCarrouselList()
 }
+
+export async function createEventDomain(payload: ContentDto.CreateEvent) {
+    const result = await ContentRepository.DBCreateEvent(payload)
+
+    if (result.affectedRows < 1) {
+        throw new ServerError('FAILED_TO_CREATE_CONTENT_EVENT')
+    }
+
+    return result
+}
+
+export async function editEventDomain(payload: ContentDto.EditEvent) {
+    const result = await ContentRepository.DBEditEvent(payload)
+
+    if(result.affectedRows < 1) {
+        throw new ServerError("FAILED_EDIT_EVENT")
+    }
+
+    return result
+}
+
+export async function GetEventDetailsDomain(id: number) {
+    return await ContentRepository.DBGetEventByEvent(id)
+}

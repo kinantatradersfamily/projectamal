@@ -21,7 +21,11 @@ export type UserList = Pick<User, 'id' | 'username' | 'role_id' | 'active'>[]
 export type UpdatePayload = { id: number } & CreatePayload 
 
 export type LoginRequest = yup.InferType<typeof loginRequest>
-export type LoginServiceApp = LoginRequest
+export type LoginServiceApp = LoginRequest & {
+    action: string
+    ip: string
+    url: string
+}
 
 export type GetUserRequest = yup.InferType<typeof getUserRequest>
 export type GetUserServiceApp = GetUserRequest

@@ -106,3 +106,23 @@ export async function GetCarrouselDetailsServiceApp(payload: ContentDto.GetCarro
 
     return carrousel
 }
+
+export async function CreateEventServiceApp(payload: ContentDto.CreateEventServiceApp) {
+    await ContentDto.createEventRequest.validate(payload)
+
+    const { title, description, event_id } = payload
+
+    await ContentDomainService.createEventDomain({ title, description, event_id })
+
+    return true
+}
+
+export async function EditEventServiceApp(payload: ContentDto.EditEventServiceApp) {
+    await ContentDto.editEventRequest.validate(payload)
+    
+    const { description, id, title } = payload
+
+    await ContentDomainService.editEventDomain({ description, title, id })
+
+    return true
+}

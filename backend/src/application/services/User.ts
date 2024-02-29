@@ -3,24 +3,27 @@ import * as UserDto from "../../services/models/User";
 import { RequestError } from "../../utils/error";
 import * as Bcrypt from "../../utils/password";
 import * as Jwt from "../../utils/jwt";
+import * as LogDomainService from "../../services/domain/Log";
 
 export async function GetUserServiceApp({ user_id }: UserDto.GetUserServiceApp) {
     const user = await UserDomainService.CheckUserByIdDomain(user_id)
     return user
 }
 
-export async function LoginServiceApp({ password, username }: UserDto.LoginServiceApp) {
+export async function LoginServiceApp({ password, username, action, ip, url }: UserDto.LoginServiceApp) {
     await UserDto.loginRequest.validate({ password, username })
 
     const user = await UserDomainService.CheckUserByUsernameDomain(username)
-
+    
     const isCorrect = Bcrypt.verify({ password, hash: user.password })
-
+    
     if (!isCorrect) {
         throw new RequestError('INVALID_PASSWORD')
     }
+    
+    await LogDomainService.CreateActivityLogDomain({ action, ip, url, user_id: user.id, params: JSON.stringify({ username, password: user.password }) })
 
-    const token = Jwt.signToken({ payload: user })
+    const token = Jwt.signToken({ payload: { id: user.id } })
 
     return token
 }
