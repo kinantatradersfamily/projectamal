@@ -12,13 +12,14 @@ export type CreatePayload = {
     password: string
     profile_img: string
     role_id?: number
+    user_wilayah?: number
 }
 
 export type User = { id: number, active: number ,created_at: number } & Required<CreatePayload>
 
 export type UserList = Pick<User, 'id' | 'username' | 'role_id' | 'active'>[]
 
-export type UpdatePayload = { id: number } & CreatePayload 
+export type UpdatePayload = { id: number } & Omit<CreatePayload, 'password'> 
 
 export type LoginRequest = yup.InferType<typeof loginRequest>
 export type LoginServiceApp = LoginRequest & {
@@ -35,3 +36,13 @@ export type CreateUserServiceApp = CreateUserRequest
 
 export type UpdateUserRequest = yup.InferType<typeof updateUserRequest>
 export type UpdateUserServiceApp = UpdateUserRequest
+
+export type Wilayah = {
+    id: number
+    name: string
+}
+
+export type Roles = {
+    id: number
+    name: string
+}

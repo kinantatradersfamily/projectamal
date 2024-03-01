@@ -69,3 +69,21 @@ export async function getUserListHandler() {
     throw error    
   }
 }
+
+export async function getWilayahListHandler() {
+  try {
+    const message = await UserDomainService.GetWilayahListServiceApp()
+    return { message }
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function getRoleListHandler() {
+  try {
+    const message = await UserDomainService.GetRoleListServiceApp()
+    return { message }
+  } catch (error) {
+    throw error
+  }
+}

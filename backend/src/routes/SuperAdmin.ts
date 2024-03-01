@@ -74,8 +74,27 @@ const routes: RouteOptions[] = [
     {
         method: ["GET"],
         url: "/users",
+        schema: {
+            summary: "Get User List"
+        },
         handler: UserController.getUserListHandler
     },
+    {
+        method: ["GET"],
+        url: "/roles",
+        schema: {
+            summary: "Get Role List"
+        },
+        handler: UserController.getRoleListHandler
+    },
+    {
+        method: ["GET"],
+        url: '/users/wilayah',
+        schema: {
+            summary: "Get Wilayah List"
+        },
+        handler: UserController.getWilayahListHandler
+    }
 ]
 
 export default async function SuperAdminRoutes(server: FastifyInstance) {

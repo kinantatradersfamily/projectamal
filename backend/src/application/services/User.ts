@@ -28,22 +28,44 @@ export async function LoginServiceApp({ password, username, action, ip, url }: U
     return token
 }
 
-export async function CreateUserServiceApp({ username, password, image }: UserDto.CreateUserServiceApp) {
-    await UserDto.createUserRequest.validate({ username, password, image })
+export async function CreateUserServiceApp(payload: UserDto.CreateUserServiceApp) {
+    await UserDto.createUserRequest.validate(payload)
+
+    const { username, password, role_id, image, user_wilayah } = payload 
 
     await UserDomainService.CheckUsernameAvailableDomain(username)
 
-    await UserDomainService.CreateUserDomain({ username, password: Bcrypt.hashPassword(password), profile_img: image !== undefined ? image.path as string : process.env.DEFAULT_USER_IMG_URL })
+    await UserDomainService.CheckRoleExistDomain(role_id)
+
+    // Kalo bikin user kelpala wilayah, user_wilayahnya juga di insert. 
+    if(role_id == 3 && user_wilayah) {
+        await UserDomainService.CheckWilayahExistDomain(user_wilayah)
+        await UserDomainService.CreateUserDomain({ username, password: Bcrypt.hashPassword(password), profile_img: image !== undefined ? image.path as string : process.env.DEFAULT_USER_IMG_URL, role_id, user_wilayah })
+    } else {
+        await UserDomainService.CreateUserDomain({ username, password: Bcrypt.hashPassword(password), profile_img: image !== undefined ? image.path as string : process.env.DEFAULT_USER_IMG_URL, role_id })
+
+    }
 
     return true
 }
 
-export async function UpdateUserServiceApp({ id, username, password, image }: UserDto.UpdateUserServiceApp) {
-    await UserDto.updateUserRequest.validate({ id, username, password, image })
+export async function UpdateUserServiceApp(payload: UserDto.UpdateUserServiceApp) {
+    await UserDto.updateUserRequest.validate(payload)
+
+    const { id, role_id, username, image, user_wilayah } = payload
 
     const user = await UserDomainService.CheckUserByIdDomain(id)
 
-    await UserDomainService.UpdateUserDomain({ id, username, password: Bcrypt.hashPassword(password), profile_img: image !== undefined ? image.path as string : user.profile_img })
+    await UserDomainService.CheckRoleExistDomain(role_id)
+
+
+    // Kalo update ke user kepala wilayah, user_wilayahnya juga ikut di update.
+    if(role_id == 3 && user_wilayah) {
+        await UserDomainService.CheckWilayahExistDomain(user_wilayah)
+        await UserDomainService.UpdateUserDomain({ id, username, profile_img: image !== undefined ? image.path as string : user.profile_img, role_id, user_wilayah })
+    } else {
+        await UserDomainService.UpdateUserDomain({ id, username, profile_img: image !== undefined ? image.path as string : user.profile_img, role_id })
+    }
 
     return true
 }
@@ -51,4 +73,12 @@ export async function UpdateUserServiceApp({ id, username, password, image }: Us
 export async function GetUserListServiceApp() {
     const users = await UserDomainService.GetUserListDomain()
     return users
+}
+
+export async function GetWilayahListServiceApp() {
+    return await UserDomainService.GetWilayahListDomain()
+}
+
+export async function GetRoleListServiceApp() {
+    return await UserDomainService.GetRoleListDomain()
 }

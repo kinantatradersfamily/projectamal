@@ -1,12 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ForbiddenAccessError, UnathorizedError } from "../../utils/error";
-import { JwtPayload, verifyToken } from "../../utils/jwt";
-import { Role, User } from "../../services/models/User";
+import { ForbiddenAccessError, UnathorizedError } from "@utils/error";
+import { JwtPayload, verifyToken } from "@utils/jwt";
+import { Role } from "../../services/models/User";
 import { CheckUserByIdDomain } from "../../services/domain/User";
+import { RequestUser } from "@utils/user";
 
 declare module "fastify" {
     export interface FastifyRequest {
-        user: User
+        user: RequestUser
     }
 }
 
@@ -17,9 +18,15 @@ export async function CheckAuth(request: FastifyRequest, reply: FastifyReply) {
         throw new UnathorizedError('PLEASE_LOGIN_FIRST')
     }
 
-    const user: JwtPayload = verifyToken(token)
+    const claims: JwtPayload = verifyToken(token)
 
-    request.user = await CheckUserByIdDomain(user.id)
+    const user = await CheckUserByIdDomain(claims.id)
+
+    if(!user.active) {
+        throw new UnathorizedError('ACCOUNT_WAS_INACTIVE')
+    }
+
+    request.user = new RequestUser(user)
 }
 
 export function CheckRoles(...role: Role[]) {
