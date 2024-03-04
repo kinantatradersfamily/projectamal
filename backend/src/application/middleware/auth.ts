@@ -18,7 +18,7 @@ export async function CheckAuth(request: FastifyRequest, reply: FastifyReply) {
         throw new UnathorizedError('PLEASE_LOGIN_FIRST')
     }
 
-    const claims: JwtPayload = verifyToken(token)
+    const claims = await verifyToken(token)
 
     const user = await CheckUserByIdDomain(claims.id)
 

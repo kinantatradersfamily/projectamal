@@ -13,9 +13,8 @@ export async function getReportListHandler() {
 
 export async function createReportHandler(request: FastifyRequest) {
     try {
-        const user = request.user
         const body = request.body as ReportDto.CreateReportRequest
-        const message = await ReportService.CreateReportServiceApp({ ...body, manager_id: user.id })
+        const message = await ReportService.CreateReportServiceApp({ ...body })
 
         return { message }
     } catch (error) {

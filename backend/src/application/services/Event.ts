@@ -1,22 +1,26 @@
 import * as EventDomainService from "../../services/domain/Event";
 import * as ContentDomainService from "../../services/domain/Content";
 import * as EventDto from "../../services/models/Event";
-import { NotFoundError } from "../../utils/error";
+import { NotFoundError, RequestError } from "../../utils/error";
 
-export async function EventListServiceApp() {
-    const event = await EventDomainService.EventListDomain()
+export async function EventListServiceApp({ wilayah_id }: EventDto.EventListParams) {
+    const event = await EventDomainService.EventListDomain({ wilayah_id })
     return event
 }
 
 export async function GetEventDetailsServiceApp(payload: EventDto.GetEventDetailsServiceApp) {
     await EventDto.getEventDetailsRequest.validate(payload)
 
-    const { event_id } = payload
+    const { event_id, wilayah_id } = payload
 
     const event = await EventDomainService.GetEventDetailsDomain(event_id)
 
     if(!event) {
         throw new NotFoundError("EVENT_NOT_FOUND")
+    }
+
+    if(event.wilayah_id !== wilayah_id) {
+        throw new RequestError('THIS_EVENT_NOT_BELONGS_TO_YOU')
     }
 
     const content = await ContentDomainService.GetEventDetailsDomain(event_id)

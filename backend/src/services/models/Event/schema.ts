@@ -1,13 +1,17 @@
 import { File } from 'fastify-multer/lib/interfaces';
 import * as yup from 'yup';
 
-export const createEventRequest = yup.object({
+const eventPayload = {
     title: yup.string().required(),
     description: yup.string().required(),
     address: yup.string().required(),
     start_date: yup.number().required(),
     end_date: yup.number().required(),
     image: yup.mixed<File>().required()
+}
+
+export const createEventRequest = yup.object({
+    ...eventPayload
 });
 
 export const getEventDetailsRequest = yup.object({

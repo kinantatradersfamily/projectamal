@@ -34,7 +34,7 @@ export async function DBGetUserList() {
 }
 
 export async function DBGetAccessWilayah(user_id: number) {
-    return await db.query(`SELECT GROUP_CONCAT(u.wilayah_id SEPARATOR ',') access_wilayah FROM 
+    return await db.query<Array<{ access_wilayah: string }>>(`SELECT GROUP_CONCAT(u.wilayah_id SEPARATOR ',') access_wilayah FROM 
 	((SELECT u.id user_id, u.username, uwa.wilayah_id FROM users u
 			iNNER JOIN user_wilayah_access uwa ON uwa.role_id = u.role_id WHERE u.user_wilayah IS NULL)
 		UNION

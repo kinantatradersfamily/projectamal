@@ -1,5 +1,6 @@
-import * as ReportDomainService from "../../services/domain/Report";
-import * as ReportDto from "../../services/models/Report";
+import * as ReportDomainService from "@domain/Report";
+import * as EventDomainService from "@domain/Event";
+import * as ReportDto from "@models/Report";
 
 export async function GetReportListServiceApp() {
     const report = await ReportDomainService.GetReportListDomain()
@@ -8,6 +9,8 @@ export async function GetReportListServiceApp() {
 
 export async function CreateReportServiceApp(payload: ReportDto.CreateReportServiceApp) {
     await ReportDto.createReportRequest.validate(payload)
+
+    await EventDomainService.CheckEventExistDomain(payload.event_id)
 
     await ReportDomainService.CreateReportDomain(payload)
 

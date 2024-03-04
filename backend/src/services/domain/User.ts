@@ -1,6 +1,6 @@
 import { NotFoundError, RequestError, ServerError } from "@utils/error";
 import { CreatePayload, UpdatePayload } from "../models/User";
-import { DBCreateUser, DBGetRole, DBGetRoleList, DBGetUserById, DBGetUserByUsername, DBGetUserList, DBGetWilayah, DBGetWilayahList, DBUpdateUser } from "../repository/User";
+import { DBCreateUser, DBGetAccessWilayah, DBGetRole, DBGetRoleList, DBGetUserById, DBGetUserByUsername, DBGetUserList, DBGetWilayah, DBGetWilayahList, DBUpdateUser } from "../repository/User";
 
 export async function CheckUserByUsernameDomain(username: string) {
     const result = await DBGetUserByUsername(username)
@@ -81,4 +81,14 @@ export async function GetWilayahListDomain() {
 
 export async function GetRoleListDomain() {
     return await DBGetRoleList()
+}
+
+export async function getAccessWilayahDomain(user_id: number) {
+    const query = await DBGetAccessWilayah(user_id)
+
+    if(query.length < 1) {
+        throw new NotFoundError('ACCESS_WILAYAH_NOT_FOUND')
+    }
+
+    return query[0].access_wilayah
 }

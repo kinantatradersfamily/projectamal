@@ -9,10 +9,10 @@ export type CreatePayload = {
     date: string
     event?: number,
     pemateri: string,
-    manager_id: number
+    event_id: number
 }
 
-export type EditPayload = Omit<CreatePayload, 'manager_id'> & {
+export type EditPayload = Omit<CreatePayload, 'event_id'> & {
     id: number
 }
 
@@ -23,9 +23,7 @@ export type Report = {
 export type ReportList = Report[]
 
 export type CreateReportRequest = yup.InferType<typeof createReportRequest>
-export type CreateReportServiceApp = CreateReportRequest & {
-    manager_id: number
-}
+export type CreateReportServiceApp = CreateReportRequest
 
 export type GetReportDetailsRequest = yup.InferType<typeof getReportDetailsRequest>
 export type GetReportDetailsServiceApp = GetReportDetailsRequest

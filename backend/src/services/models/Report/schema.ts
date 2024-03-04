@@ -11,6 +11,7 @@ const reportPayload = {
 }
 
 export const createReportRequest = yup.object({
+    event_id: yup.number().required(),
     ...reportPayload
 });
 

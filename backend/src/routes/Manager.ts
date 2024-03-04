@@ -4,6 +4,9 @@ import * as UserController from "../controller/UserController";
 import * as Auth from "../application/middleware/Auth";
 import * as Log from "../application/middleware/Log";
 import * as EventController from "../controller/EventController";
+import { createStorage } from "@utils/upload";
+
+const upload = createStorage()
 
 const routes: RouteOptions[] = [
     {
@@ -40,7 +43,43 @@ const routes: RouteOptions[] = [
         },
         preHandler: [Auth.CheckAuth, Log.ActivityLogging],
         handler: UserController.verifyUser,
-    }
+    },
+    {
+        method: ["POST"],
+        url: "/events/create",
+        schema: {
+            summary: "Create Event"
+        },
+        preHandler: [upload.single('events'), Auth.CheckAuth, Log.ActivityLogging],
+        handler: EventController.createEventHandler
+    },
+    {
+        method: ["POST"],
+        url: "/events/edit",
+        schema: {
+            summary: "Edit Event",
+        },
+        preHandler: [upload.single('events'), Auth.CheckAuth, Log.ActivityLogging],
+        handler: EventController.editEventHandler
+    },
+    {
+        method: ["GET"],
+        url: "/events",
+        schema: {
+            summary: "Event List"
+        },
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
+        handler: EventController.eventListHandler
+    },
+    {
+        method: ["GET"],
+        url: "/events/:event_id",
+        schema: {
+            summary: "Get Event Details"
+        },
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
+        handler: EventController.getEventDetailsHandler
+    },
 ]
 
 export default async function ManagerRoutes(server: FastifyInstance) {

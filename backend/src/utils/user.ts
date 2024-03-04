@@ -1,5 +1,5 @@
+import { getAccessWilayahDomain } from "src/services/domain/User";
 import { User } from "../services/models/User"
-import { DBGetAccessWilayah } from "../services/repository/User";
 
 export class RequestUser implements User {
     id: number;
@@ -23,6 +23,6 @@ export class RequestUser implements User {
     }
 
     async getAccessWilayah() {
-        return await DBGetAccessWilayah(this.id)
+        return await getAccessWilayahDomain(this.id)
     }
 }

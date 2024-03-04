@@ -105,10 +105,11 @@
     "baseUrl": "./",
     "paths": {
       "@utils/*": ["./src/utils/*"],
-      "@application/": ["./src/application/*"],
+      "@application/*": ["./src/application/*"],
       "@controller/*": ["./src/controller/*"],
       "@models/*": ["./src/services/models/*"],
-      "@repository/*": ["./src/services/repository/*"]
+      "@repository/*": ["./src/services/repository/*"],
+      "@domain/*": ["./src/services/domain/*"]
     },
 
     /* Completeness */

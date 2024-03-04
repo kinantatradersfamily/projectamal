@@ -3,16 +3,16 @@ import db from "../../../ormconfig";
 import * as EventDto from "../models/Event";
 import moment from "moment";
 
-export async function DBEventList() {
-    return await db.query<EventDto.EventList[]>(`SELECT id, title, address, start_date, end_date, created_at FROM events`)
+export async function DBEventList({ wilayah_id }: EventDto.EventListParams) {
+    return await db.query<EventDto.EventList[]>(`SELECT id, title, address, start_date, end_date, created_at FROM events WHERE wilayah_id IN (?)`, [wilayah_id])
 }
 
-export async function DBCreateEvent({ description, end_date, start_date, title, address, image_url }: EventDto.CreatePayload) {
+export async function DBCreateEvent({ description, end_date, start_date, title, address, image_url, wilayah_id }: EventDto.CreatePayload) {
     const values = [
-        [title, description, address, start_date, end_date, image_url]
+        [title, description, address, start_date, end_date, image_url, wilayah_id]
     ]
     const query = await db.query<ResultSetHeader>(`
-        INSERT INTO events (title, description, address, start_date, end_date, image_url) VALUES ?
+        INSERT INTO events (title, description, address, start_date, end_date, image_url, wilayah_id) VALUES ?
     `, [values])
 
     return query

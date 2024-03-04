@@ -11,37 +11,12 @@ const upload = createStorage()
 
 const routes: RouteOptions[] = [
     {
-        method: ["GET"],
-        url: "/reports",
-        schema: {
-            summary: "Get Report List",
-        },
-        handler: ReportController.getReportListHandler
-    },
-    {
         method: ["POST"],
         url: "/reports/edit",
         schema: {
             summary: "Edit Report",
         },
         handler: ReportController.editReportHandler
-    },
-    {
-        method: ["GET"],
-        url: "/events",
-        schema: {
-            summary: "Event List"
-        },
-        handler: EventController.eventListHandler
-    },
-    {
-        method: ["POST"],
-        url: "/events/create",
-        schema: {
-            summary: "Create Event"
-        },
-        preHandler: upload.single('events'),
-        handler: EventController.createEventHandler
     },
     {
         method: ["POST"],
@@ -86,14 +61,6 @@ const routes: RouteOptions[] = [
         handler: ContentController.getCarrouselListHandler
     },
     {
-        method: ["GET"],
-        url: "/events/:event_id",
-        schema: {
-            summary: "Get Event Details"
-        },
-        handler: EventController.getEventDetailsHandler
-    },
-    {
         method: ["POST"],
         url: "/contents/events/edit",
         schema: {
@@ -102,14 +69,22 @@ const routes: RouteOptions[] = [
         handler: ContentController.editEventHandler
     },
     {
-        method: ["POST"],
-        url: "/events/edit",
+        method: ["GET"],
+        url: "/reports",
         schema: {
-            summary: "Edit Event",
+            summary: "Get Report List",
         },
-        preHandler: upload.single('events'),
-        handler: EventController.editEventHandler
-    }
+        // preHandler: [Auth.CheckAuth, Log.ActivityLogging],
+        handler: ReportController.getReportListHandler
+    },
+    {
+        method: ["GET"],
+        url: "/admin/events",
+        schema: {
+            summary: "Event List"
+        },
+        handler: EventController.adminEventListHandler
+    },
 ]
 
 export default async function AdminRoutes(server: FastifyInstance) {

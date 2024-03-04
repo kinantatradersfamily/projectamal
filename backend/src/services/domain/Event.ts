@@ -2,8 +2,8 @@ import * as EventDto from "../../services/models/Event";
 import * as EventRepository from "../../services/repository/Event";
 import { NotFoundError, RequestError, ServerError } from "../../utils/error";
 
-export async function EventListDomain() {
-    return await EventRepository.DBEventList()
+export async function EventListDomain({ wilayah_id }: EventDto.EventListParams) {
+    return await EventRepository.DBEventList({ wilayah_id })
 }
 
 export async function CreateEventDomain(payload: EventDto.CreatePayload) {
