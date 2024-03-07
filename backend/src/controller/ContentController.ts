@@ -97,3 +97,12 @@ export async function editEventHandler(request: FastifyRequest) {
         throw error
     }
 }
+
+export async function getActiveContentHandler() {
+    try {
+        const message = await ContentService.GetActiveContentServiceApp()
+        return { message }
+    } catch (error) {
+        throw error
+    }
+}

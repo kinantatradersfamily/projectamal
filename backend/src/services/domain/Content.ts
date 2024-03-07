@@ -94,3 +94,7 @@ export async function editEventDomain(payload: ContentDto.EditEvent) {
 export async function GetEventDetailsDomain(id: number) {
     return await ContentRepository.DBGetEventByEvent(id)
 }
+
+export async function GetActiveCarrouselDomain() {
+    return await ContentRepository.DBGetActiveCarrousel()
+}

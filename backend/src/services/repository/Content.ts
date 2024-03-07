@@ -64,3 +64,7 @@ export async function DBEditEvent({ description, id, title }: ContentDto.EditEve
     const query = await db.query<ResultSetHeader>(`UPDATE cms_event SET description = ?, title = ?, updated_at = ? WHERE id = ?`, values)
     return query
 }
+
+export async function DBGetActiveCarrousel() {
+    return await db.query<ContentDto.Carrousel[]>(`SELECT * FROM cms_carrousel WHERE active = 1`)
+}

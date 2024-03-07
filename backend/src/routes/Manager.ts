@@ -1,5 +1,6 @@
 import { FastifyInstance, RouteOptions } from "fastify";
 import * as ReportController from "../controller/ReportController";
+import * as ContentController from "../controller/ContentController";
 import * as UserController from "../controller/UserController";
 import * as Auth from "../application/middleware/Auth";
 import * as Log from "../application/middleware/Log";
@@ -80,6 +81,11 @@ const routes: RouteOptions[] = [
         preHandler: [Auth.CheckAuth, Log.ActivityLogging],
         handler: EventController.getEventDetailsHandler
     },
+    {
+        method: ["GET"],
+        url: "/contents/active",
+        handler: ContentController.getActiveContentHandler
+    }
 ]
 
 export default async function ManagerRoutes(server: FastifyInstance) {

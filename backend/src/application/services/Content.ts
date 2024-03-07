@@ -1,5 +1,6 @@
 import db from "../../../ormconfig";
 import * as ContentDomainService from "../../services/domain/Content";
+import * as EventDomainService from "../../services/domain/Event";
 import * as ContentDto from "../../services/models/Content";
 
 export async function GetTemplateListServiceApp() {
@@ -125,4 +126,12 @@ export async function EditEventServiceApp(payload: ContentDto.EditEventServiceAp
     await ContentDomainService.editEventDomain({ description, title, id })
 
     return true
+}
+
+export async function GetActiveContentServiceApp() {
+    const carrousel = await ContentDomainService.GetActiveCarrouselDomain()
+    const event = await EventDomainService.GetEventActiveDomain()
+    const eventDetails = await ContentDomainService.GetEventDetailsDomain(event.id)
+
+    return { carrousel, event: { ...event, items: eventDetails } }
 }

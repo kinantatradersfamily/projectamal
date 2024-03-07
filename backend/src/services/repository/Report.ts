@@ -20,7 +20,7 @@ export async function DBCreateReport({ date, description, event = 1, pemateri, t
 }
 
 export async function DBGetReportById(id: number) {
-    const query = await db.query<ReportDto.Report[]>(`SELECT id, topic, pemateri, description, event, total_amal, total_attendance, date, wilayah_id, created_at, updated_at FROM report_attendance`, [id])
+    const query = await db.query<ReportDto.Report[]>(`SELECT id, topic, pemateri, description, event, total_amal, total_attendance, date, created_at, updated_at FROM report_attendance`, [id])
     return query
 }
 
