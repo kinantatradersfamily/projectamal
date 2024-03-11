@@ -1,6 +1,57 @@
 <template>
   <div>
     <index-navbar />
+    <section style="margin-top: 7vh;">
+      <div
+        class="relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75"
+      >
+        <div
+          class="absolute top-0 w-full h-full bg-center bg-cover"
+          :style="{'background-image': 'url(' + imageChange[currentIndex] + ')', 'transition': '1s'  }"
+        >
+          <span
+            id="blackOverlay"
+            class="w-full h-full absolute opacity-75 bg-black"
+          ></span>
+        </div>
+        <div class="container relative mx-auto">
+          <div class="items-center flex flex-wrap">
+            <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+              <div class="pr-12">
+                <h1 class="text-white font-semibold text-5xl">
+                  Your story starts with us.
+                </h1>
+                <p class="mt-4 text-lg text-blueGray-200">
+                  This is a simple example of a Landing Page you can build using
+                  Vue Notus. It features multiple CSS components based on the
+                  Tailwind CSS design system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
+          style="transform: translateZ(0);"
+        >
+          <svg
+            class="absolute bottom-0 overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="text-blueGray-200 fill-current"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+      </div>
+    </section>
+
     <section
       class="header relative pt-16 items-center flex h-screen max-h-860-px"
     >
@@ -762,6 +813,8 @@ import documentation from "@/assets/img/documentation.png";
 import login from "@/assets/img/login.jpg";
 import profile from "@/assets/img/profile.jpg";
 import landing from "@/assets/img/landing.jpg";
+import axios from 'axios';
+
 
 export default {
   data() {
@@ -777,11 +830,40 @@ export default {
       login,
       profile,
       landing,
+      currentIndex: 0,
+      baseUrl: 'http://localhost:3000',
+      imageCarrousel: [],
+      imageChange: ['https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80','https://insidethemagic.net/wp-content/uploads/2023/04/panda4.jpg', 'https://images.bauerhosting.com/legacy/empire-tmdb/films/9502/images/UJwhgwAxU42cm9XKncO9boFAEV.jpg?ar=16%3A9&fit=crop&crop=top&auto=format&w=1440&q=80']
     };
+  },
+  computed: {
+    currentImage() {
+      return this.imageChange[this.currentIndex];
+    }
+  },
+  created() {
+    setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.imageChange.length;
+    }, 5000);
   },
   components: {
     IndexNavbar,
     FooterComponent,
   },
+
+  mounted() {
+    this.initializePageLanding()
+  },
+  methods: {
+    async initializePageLanding() {
+      try {
+        const response =  await axios.get(`${this.baseUrl}/carrousel`)
+        this.imageCarrousel = response.data.message.map(item => item.url)
+      } catch (error) {
+        console.log(error)
+      }
+   
+    }
+  }
 };
 </script>

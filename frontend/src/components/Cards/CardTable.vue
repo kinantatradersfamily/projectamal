@@ -97,7 +97,9 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              {{ item.title }}
+            <router-link :to="{path: `/admin/landing/carousel/table/edit/${item.id}`, params: {id: item.id}}">
+              {{ item.title ? item.title : '-' }}
+            </router-link>
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -148,16 +150,6 @@
 </template>
 <script>
 
-import bootstrap from "@/assets/img/bootstrap.jpg";
-import angular from "@/assets/img/angular.jpg";
-import sketch from "@/assets/img/sketch.jpg";
-import react from "@/assets/img/react.jpg";
-import vue from "@/assets/img/react.jpg";
-
-import team1 from "@/assets/img/team-1-800x800.jpg";
-import team2 from "@/assets/img/team-2-800x800.jpg";
-import team3 from "@/assets/img/team-3-800x800.jpg";
-import team4 from "@/assets/img/team-4-470x470.png";
 
 import axios from 'axios';
 import moment from 'moment'
@@ -166,15 +158,6 @@ import moment from 'moment'
 export default {
   data() {
     return {
-      bootstrap,
-      angular,
-      sketch,
-      react,
-      vue,
-      team1,
-      team2,
-      team3,
-      team4,
       baseUrl: 'http://localhost:3000',
       forTable: []
     };
@@ -183,10 +166,6 @@ export default {
   props: {
     color: {
       default: "light",
-      validator: function (value) {
-        // The value must match one of these strings
-        return ["light", "dark"].indexOf(value) !== -1;
-      },
     },
   },
   async mounted() {
@@ -195,13 +174,15 @@ export default {
   methods: {
     async initilizeData() {
       try {
-        const contents =  await axios.get(`${this.baseUrl}/carrousel`)
+        const token = localStorage.getItem('detail_user')
+        const contents =  await axios.get(`${this.baseUrl}/carrousel`, {headers: {"Authorization": token}})
+        console.log(contents, 'w3123')
         let tempTable = []
         
         contents.data.message.forEach(item => {
           tempTable.push({
             description: item.description,
-            title: item.name,
+            title: item.title,
             status: item.active,
             created_at: moment.utc(item.created_at * 1000).utcOffset('+07:00').format('YYYY-MM-DD HH:mm:ss'),
             update_at: item.update_at ? moment.utc(item.update_at * 1000).utcOffset('+07:00').format('YYYY-MM-DD HH:mm:ss') : '-',
@@ -211,7 +192,7 @@ export default {
 
         this.forTable = tempTable
       } catch (error) {
-        console.log(error)
+        console.log(error, 'wew')
       }
 
     },

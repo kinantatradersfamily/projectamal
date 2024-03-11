@@ -65,10 +65,14 @@ export default {
         if(!authUser) {
           this.$router.push({path: '/auth/login'})
         } else {
-          await axios.get(`${this.baseUrl}/users/verify`, { headers: {"Authorization" : `${authUser}`} });
+          const dww = await axios.get(`${this.baseUrl}/users/verify`, { headers: {"Authorization" : `${authUser}`} });
+          console.log(dww, 'dw')
         }
       } catch (error) {
         this.alertOpen = true
+        if(error.response.data.message) {
+          this.$router.push({path: '/auth/login'})
+        }
       } 
     }
   }

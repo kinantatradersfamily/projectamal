@@ -33,6 +33,7 @@ import Landing from "@/views/Landing.vue";
 import Profile from "@/views/Profile.vue";
 import Index from "@/views/Index.vue";
 import SliderLanding from '../src/views/admin/table/landing/sliderTableDetail.vue'
+import SliderEditCarrousel from '../src/views/admin/table/landing/edit/sliderTableEdit.vue'
 
 // routes
 
@@ -61,6 +62,10 @@ const routes = [
       {
         path: "/admin/landing/carousel/table",
         component: SliderLanding,
+      },
+      {
+        path: "/admin/landing/carousel/table/edit/:id",
+        component: SliderEditCarrousel,
       },
     ],
   },
