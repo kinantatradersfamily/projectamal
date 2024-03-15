@@ -22,6 +22,8 @@ export type Report = {
 
 export type ReportList = Report[]
 
+export type GetReportListServiceApp = { wilayah_id: string }
+
 export type CreateReportRequest = yup.InferType<typeof createReportRequest>
 export type CreateReportServiceApp = CreateReportRequest
 

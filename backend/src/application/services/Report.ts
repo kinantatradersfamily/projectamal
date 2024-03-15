@@ -2,8 +2,8 @@ import * as ReportDomainService from "@domain/Report";
 import * as EventDomainService from "@domain/Event";
 import * as ReportDto from "@models/Report";
 
-export async function GetReportListServiceApp() {
-    const report = await ReportDomainService.GetReportListDomain()
+export async function GetReportListServiceApp({ wilayah_id }: ReportDto.GetReportListServiceApp) {
+    const report = await ReportDomainService.GetReportListDomain(wilayah_id)
     return report
 }
 

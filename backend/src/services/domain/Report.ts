@@ -2,8 +2,8 @@ import { NotFoundError, ServerError } from "../../utils/error";
 import * as ReportDto from "../models/Report";
 import * as ReportRepository from "../repository/Report";
 
-export async function GetReportListDomain() {
-    return await ReportRepository.DBGetReportList()
+export async function GetReportListDomain(wilayah_id: string) {
+    return await ReportRepository.DBGetReportList(wilayah_id)
 }
 
 export async function CreateReportDomain(payload: ReportDto.CreatePayload) {

@@ -94,7 +94,7 @@ const routes: RouteOptions[] = [
             summary: "Get Wilayah List"
         },
         handler: UserController.getWilayahListHandler
-    }
+    },
 ]
 
 export default async function SuperAdminRoutes(server: FastifyInstance) {

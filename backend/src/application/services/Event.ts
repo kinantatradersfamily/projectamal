@@ -2,6 +2,7 @@ import * as EventDomainService from "../../services/domain/Event";
 import * as ContentDomainService from "../../services/domain/Content";
 import * as EventDto from "../../services/models/Event";
 import { NotFoundError, RequestError } from "../../utils/error";
+import * as UserDomainService from "@domain/User";
 
 export async function EventListServiceApp({ wilayah_id }: EventDto.EventListParams) {
     const event = await EventDomainService.EventListDomain({ wilayah_id })
@@ -33,6 +34,9 @@ export async function CreateEventServiceApp(payload: EventDto.CreateEventService
 
     const { image, ...data } = payload
 
+    // Check if the wilayah exists, if not throw NotFoundError
+    await UserDomainService.CheckWilayahExistDomain(data.wilayah_id)
+
     await EventDomainService.CreateEventDomain({ image_url: image.path as string, ...data })
 
     return true
@@ -45,6 +49,7 @@ export async function EditEventServiceApp(payload: EventDto.EditEventServiceApp)
 
     const event = await EventDomainService.CheckEventExistDomain(id)
 
+    // Check if other event was already active (event only 1 that can be active)
     if(status) {
         await EventDomainService.CheckEventActiveDomain(id)   
     }

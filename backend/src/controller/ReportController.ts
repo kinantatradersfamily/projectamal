@@ -2,9 +2,11 @@ import { FastifyRequest } from "fastify";
 import * as ReportService from "../application/services/Report";
 import * as ReportDto from "../services/models/Report";
 
-export async function getReportListHandler() {
+export async function getReportListHandler(request: FastifyRequest) {
     try {
-        const message = await ReportService.GetReportListServiceApp()
+        const user = request.user
+        const user_wilayah = await user.getAccessWilayah()
+        const message = await ReportService.GetReportListServiceApp({ wilayah_id: user_wilayah })
         return { message }
     } catch (error) {
         throw error

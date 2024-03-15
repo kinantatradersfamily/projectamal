@@ -3,8 +3,14 @@ import db from "../../../ormconfig";
 import * as ReportDto from "../models/Report";
 
 
-export async function DBGetReportList() {
-    return await db.query<ReportList>(`SELECT id, topic, event, pemateri, created_at FROM report_attendance ORDER BY created_at DESC`)
+export async function DBGetReportList(wilayah_id: string) {
+    return await db.query<ReportList>(`
+        SELECT ra.id, ra.topic, ra.event, ra.pemateri, ra.created_at 
+            FROM report_attendance ra 
+            INNER JOIN events e ON e.id = ra.event_id
+            WHERE e.wilayah_id IN (?)
+            ORDER BY ra.created_at DESC
+    `, [wilayah_id])
 }
 
 export async function DBCreateReport({ date, description, event = 1, pemateri, topic, total_amal, total_attendance, event_id }: ReportDto.CreatePayload) {

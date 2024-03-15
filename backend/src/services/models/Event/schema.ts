@@ -28,3 +28,8 @@ export const editEventRequest = yup.object({
     image: yup.mixed<File>(),
     status: yup.number().required()
 })
+
+export const adminCreateEventRequest = yup.object({
+    ...eventPayload,
+    wilayah_id: yup.number().required()
+})

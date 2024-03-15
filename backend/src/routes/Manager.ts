@@ -85,7 +85,25 @@ const routes: RouteOptions[] = [
         method: ["GET"],
         url: "/contents/active",
         handler: ContentController.getActiveContentHandler
-    }
+    },
+    {
+        method: ["GET"],
+        url: "/reports",
+        schema: {
+            summary: "Get Report List",
+        },
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
+        handler: ReportController.getReportListHandler
+    },
+    {
+        method: ["POST"],
+        url: "/reports/edit",
+        schema: {
+            summary: "Edit Report",
+        },
+        preHandler: [Auth.CheckAuth, Log.ActivityLogging],
+        handler: ReportController.editReportHandler
+    },
 ]
 
 export default async function ManagerRoutes(server: FastifyInstance) {

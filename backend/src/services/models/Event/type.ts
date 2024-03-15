@@ -1,5 +1,5 @@
 import * as yup from "yup"
-import { createEventRequest, editEventRequest, getEventDetailsRequest } from "./schema"
+import { adminCreateEventRequest, createEventRequest, editEventRequest, getEventDetailsRequest } from "./schema"
 
 export type CreatePayload = {
     title: string
@@ -26,9 +26,7 @@ export type CreateEventServiceApp = CreateEventRequest & {
     wilayah_id: number
 }
 
-export type AdminCreateEventRequest = CreateEventRequest & {
-    wilayah_id: number
-}
+export type AdminCreateEventRequest = yup.InferType<typeof adminCreateEventRequest>
 
 export type GetEventDetailsRequest = yup.InferType<typeof getEventDetailsRequest>
 export type GetEventDetailsServiceApp = GetEventDetailsRequest & {

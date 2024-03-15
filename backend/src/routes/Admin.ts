@@ -6,18 +6,11 @@ import * as Auth from "../application/middleware/Auth";
 import * as Log from "../application/middleware/Log";
 import { Role } from "../services/models/User";
 import { createStorage } from "../utils/upload";
+import * as AdminEventController from "@controller/Admin/EventController";
 
 const upload = createStorage()
 
 const routes: RouteOptions[] = [
-    {
-        method: ["POST"],
-        url: "/reports/edit",
-        schema: {
-            summary: "Edit Report",
-        },
-        handler: ReportController.editReportHandler
-    },
     {
         method: ["POST"],
         url: "/contents/events/create",
@@ -70,21 +63,21 @@ const routes: RouteOptions[] = [
     },
     {
         method: ["GET"],
-        url: "/reports",
-        schema: {
-            summary: "Get Report List",
-        },
-        // preHandler: [Auth.CheckAuth, Log.ActivityLogging],
-        handler: ReportController.getReportListHandler
-    },
-    {
-        method: ["GET"],
         url: "/admin/events",
         schema: {
             summary: "Event List"
         },
-        handler: EventController.adminEventListHandler
+        handler: AdminEventController.getEventListHandler
     },
+    {
+        method: ["POST"],
+        url: "/admin/events/create",
+        schema: {
+            summary: "Admin Create Event"
+        },
+        preHandler: upload.single('events'),
+        handler: AdminEventController.createEventHandler
+    }
 ]
 
 export default async function AdminRoutes(server: FastifyInstance) {
