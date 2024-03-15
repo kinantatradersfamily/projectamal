@@ -130,8 +130,13 @@ export async function EditEventServiceApp(payload: ContentDto.EditEventServiceAp
 
 export async function GetActiveContentServiceApp() {
     const carrousel = await ContentDomainService.GetActiveCarrouselDomain()
-    const event = await EventDomainService.GetEventActiveDomain()
-    const eventDetails = await ContentDomainService.GetEventDetailsDomain(event.id)
+    const event = await EventDomainService.GetEventActiveDomain() 
+
+    // Get Event active, add checking for content active (there is a possiblity of event was none)
+    let eventDetails
+    if(event) {
+        eventDetails = await ContentDomainService.GetEventDetailsDomain(event.id)
+    }
 
     return { carrousel, event: { ...event, items: eventDetails } }
 }
