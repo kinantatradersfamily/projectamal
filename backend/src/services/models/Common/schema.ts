@@ -10,5 +10,6 @@ export const envSchema = yup.object({
     DB_PASSWORD: yup.string().required(),
     DB_NAME: yup.string().required(),
     JWT_SECRET_KEY: yup.string().required(),
-    DEFAULT_USER_IMG_URL: yup.string().required()
+    DEFAULT_USER_IMG_URL: yup.string().required(),
+    MAX_EDIT_EVENT_TIME: yup.number().required()
 })

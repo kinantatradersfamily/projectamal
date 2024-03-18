@@ -1,8 +1,9 @@
 import * as EventDomainService from "../../services/domain/Event";
 import * as ContentDomainService from "../../services/domain/Content";
 import * as EventDto from "../../services/models/Event";
-import { NotFoundError, RequestError } from "../../utils/error";
+import { ForbiddenAccessError, NotFoundError, RequestError } from "../../utils/error";
 import * as UserDomainService from "@domain/User";
+import moment from "moment";
 
 export async function EventListServiceApp({ wilayah_id }: EventDto.EventListParams) {
     const event = await EventDomainService.EventListDomain({ wilayah_id })
@@ -48,6 +49,11 @@ export async function EditEventServiceApp(payload: EventDto.EditEventServiceApp)
     const { image, address, description, end_date, start_date, title, id, status } = payload
 
     const event = await EventDomainService.CheckEventExistDomain(id)
+
+    // Checking event edit max time
+    if(moment().unix() - event.created_at > process.env.MAX_EDIT_EVENT_TIME) {
+        throw new ForbiddenAccessError("EVENT_EDIT_EXPIRED")
+    }
 
     // Check if other event was already active (event only 1 that can be active)
     if(status) {
