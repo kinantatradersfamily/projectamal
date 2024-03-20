@@ -55,3 +55,18 @@ export async function GetEventActiveDomain() {
     const result = await EventRepository.DBGetEventActive()
     return result[0]
 }
+
+export async function ApproveEventDomain(payload: EventDto.ApproveEvent) {
+    const result = await EventRepository.DBApproveEvent(payload)
+
+    if(result.affectedRows < 1) {
+        throw new ServerError("FAILED_APPROVE_EVENT")
+    }
+
+    return result
+}
+
+export async function ApproveEventListDomain() {
+    const result = await EventRepository.DBApproveEventList()
+    return result
+}

@@ -25,3 +25,32 @@ export async function getEventListHandler(request: FastifyRequest) {
         throw error
     }
 }
+
+export async function approveEventHandler(request: FastifyRequest) {
+    try {
+        const { id, is_approved, reason } = request.body as EventDto.ApproveEvent
+        const message = await EventService.ApproveEventServiceApp({ id, is_approved, reason })
+        return { message }
+    } catch (error) {
+        throw error        
+    }
+}
+
+export async function approveEventListHandler() {
+    try {
+        const message = await EventService.ApproveEventListServiceApp()
+        return { message }
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function editEventHandler(request: FastifyRequest) {
+    try {
+        const { address, description, end_date, id, image, start_date, status, title, wilayah_id } = request.body as EventDto.EditEventRequest
+        const message = await EventService.EditEventServiceApp({ address, description, end_date, id, image, start_date, status, title, wilayah_id })
+        return { message }
+    } catch (error) {
+        throw error   
+    }
+}

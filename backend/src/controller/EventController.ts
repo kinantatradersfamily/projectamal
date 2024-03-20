@@ -50,9 +50,10 @@ export async function getEventDetailsHandler(request: FastifyRequest) {
 
 export async function editEventHandler(request: FastifyRequest) {
     try {
+        const { user_wilayah: wilayah_id } = request.user
         const file = request.file
-        const { image, ...body } = request.body as EventDto.EditEventRequest
-        const message = await EventService.EditEventServiceApp({ ...body, image: file })
+        const { image, ...body } = request.body as EventDto.ManagerEditEventRequest
+        const message = await EventService.EditEventServiceApp({ ...body, image: file, wilayah_id })
 
         return { message }
     } catch (error) {

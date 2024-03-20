@@ -4,7 +4,8 @@
     "start": "node ./build/app.js",
     "dev": "nodemon -e ts --exec \"ts-node -r tsconfig-paths/register ./src/app.ts\"",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "migrate:dev": "ts-node ./node_modules/typeorm/cli.js migration:run --d ./ormconfig"
+    "migrate:revert:dev": "ts-node ./node_modules/typeorm/cli.js migration:revert --d ormconfig/index.ts",
+    "migrate:dev": "ts-node ./node_modules/typeorm/cli.js migration:run --d ormconfig/index.ts"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",

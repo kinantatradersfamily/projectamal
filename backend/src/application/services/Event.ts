@@ -46,12 +46,14 @@ export async function CreateEventServiceApp(payload: EventDto.CreateEventService
 export async function EditEventServiceApp(payload: EventDto.EditEventServiceApp) {
     await EventDto.editEventRequest.validate(payload)
 
-    const { image, address, description, end_date, start_date, title, id, status } = payload
+    const { image, address, description, end_date, start_date, title, id, status, wilayah_id } = payload
 
     const event = await EventDomainService.CheckEventExistDomain(id)
 
-    // Checking event edit max time
-    if(moment().unix() - event.created_at > process.env.MAX_EDIT_EVENT_TIME) {
+    await UserDomainService.CheckWilayahExistDomain(wilayah_id)
+
+    // Checking event edit max time based of time when admin approve the event
+    if(moment().unix() - event.approved_at > process.env.MAX_EDIT_EVENT_TIME) {
         throw new ForbiddenAccessError("EVENT_EDIT_EXPIRED")
     }
 
@@ -61,10 +63,27 @@ export async function EditEventServiceApp(payload: EventDto.EditEventServiceApp)
     }
 
     if(image) {
-        await EventDomainService.EditEventDomain({ address, description, end_date, id, start_date, title, image_url: image.path as string, status })
+        await EventDomainService.EditEventDomain({ address, description, end_date, id, start_date, title, image_url: image.path as string, status, wilayah_id })
     } else {
-        await EventDomainService.EditEventDomain({ address, description, end_date, id, start_date, title, image_url: event.image_url, status })
+        await EventDomainService.EditEventDomain({ address, description, end_date, id, start_date, title, image_url: event.image_url, status, wilayah_id })
     }
 
     return true
+}
+
+export async function ApproveEventServiceApp(payload: EventDto.ApproveEventServiceApp) {
+    await EventDto.approveEventRequest.validate(payload)
+
+    const { id, is_approved, reason } = payload
+
+    await EventDomainService.CheckEventExistDomain(id)
+
+    await EventDomainService.ApproveEventDomain({ id, is_approved, reason })
+
+    return true
+}
+
+export async function ApproveEventListServiceApp() {
+    const event = await EventDomainService.ApproveEventListDomain()
+    return event
 }

@@ -77,6 +77,30 @@ const routes: RouteOptions[] = [
         },
         preHandler: upload.single('events'),
         handler: AdminEventController.createEventHandler
+    },
+    {
+        method: ['POST'],
+        url: "/events/approve",
+        schema: {
+            summary: "Admin Approve Event"
+        },
+        handler: AdminEventController.approveEventHandler
+    },
+    {
+        method: ["GET"],
+        url: "/events/approve/list",
+        schema: {
+            summary: "Admin Approve List Event"
+        },
+        handler: AdminEventController.approveEventListHandler
+    },
+    {
+        method: ["POST"],
+        url: "/admin/events/edit",
+        schema: {
+            summary: "Admin Edit Event"
+        },
+        handler: AdminEventController.editEventHandler
     }
 ]
 

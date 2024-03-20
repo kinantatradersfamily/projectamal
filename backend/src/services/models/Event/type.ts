@@ -1,5 +1,5 @@
 import * as yup from "yup"
-import { adminCreateEventRequest, createEventRequest, editEventRequest, getEventDetailsRequest } from "./schema"
+import { adminCreateEventRequest, approveEventRequest, createEventRequest, editEventRequest, getEventDetailsRequest } from "./schema"
 
 export type CreatePayload = {
     title: string
@@ -11,7 +11,7 @@ export type CreatePayload = {
     wilayah_id: number
 }
 
-export type Event = CreatePayload & { id: number, status: number, created_at: number }
+export type Event = CreatePayload & { id: number, status: number, created_at: number, is_approved: number, approved_at: number }
 
 export type EventList = Pick<Event, 'id' | 'title' | 'address' | 'start_date' | 'end_date' | 'created_at'>
 
@@ -19,7 +19,7 @@ export type EventListParams = {
     wilayah_id: number | string
 }
 
-export type EditPayload = Omit<CreatePayload, 'wilayah_id'> & { id: number, status: number }
+export type EditPayload = CreatePayload & { id: number, status: number }
 
 export type CreateEventRequest = yup.InferType<typeof createEventRequest>
 export type CreateEventServiceApp = CreateEventRequest & {
@@ -33,5 +33,17 @@ export type GetEventDetailsServiceApp = GetEventDetailsRequest & {
     wilayah_id: number
 }
 
+
 export type EditEventRequest = yup.InferType<typeof editEventRequest>
+export type ManagerEditEventRequest = Omit<EditEventRequest, 'wilayah_id'>
 export type EditEventServiceApp = EditEventRequest
+
+export type ApproveEvent = {
+    id: number
+    is_approved: number
+    reason?: string
+}
+
+export type ApproveEventRequest = yup.InferType<typeof approveEventRequest>
+export type ApproveEventServiceApp = ApproveEventRequest
+
